@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+<meta name="google-site-verification" content="L0ZN3xykszl3pBQeJ5QFwk98KKJ8kHDzGSBLhEtwmNU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kimh060612.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Index Tensorflow Serving Server Tensorflow Serving Client Tensorflow Serving Application  여기서는 1~2은 Part. A이고 3는 Part. B에서 다루도록 하겠다. Tensorflow Serving Server Tensorflow Serving은 tensorflow로 학습시킨 mode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deep learning Model Serving 강의 part.A">
+<meta property="og:url" content="https://kimh060612.github.io/2022/03/05/Serve-A/index.html">
+<meta property="og:site_name" content="Michael&#39;s Study Blog">
+<meta property="og:description" content="Index Tensorflow Serving Server Tensorflow Serving Client Tensorflow Serving Application  여기서는 1~2은 Part. A이고 3는 Part. B에서 다루도록 하겠다. Tensorflow Serving Server Tensorflow Serving은 tensorflow로 학습시킨 mode">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kimh060612.github.io/img/Serving.png">
+<meta property="og:image" content="https://kimh060612.github.io/img/Shiba.jpg">
+<meta property="article:published_time" content="2022-03-05T10:29:08.000Z">
+<meta property="article:modified_time" content="2022-05-29T15:00:32.841Z">
+<meta property="article:author" content="Michael Kim">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="Tensorflow2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kimh060612.github.io/img/Serving.png">
+
+<link rel="canonical" href="https://kimh060612.github.io/2022/03/05/Serve-A/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Deep learning Model Serving 강의 part.A | Michael's Study Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/rss2.xml" title="Michael's Study Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Michael's Study Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Backend Engineering & Deep learning!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives<span class="badge">19</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kimh060612.github.io/2022/03/05/Serve-A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Michael Kim">
+      <meta itemprop="description" content="Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michael's Study Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Deep learning Model Serving 강의 part.A
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-05 19:29:08" itemprop="dateCreated datePublished" datetime="2022-03-05T19:29:08+09:00">2022-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-30 00:00:32" itemprop="dateModified" datetime="2022-05-30T00:00:32+09:00">2022-05-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/03/05/Serve-A/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/05/Serve-A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><ol>
+<li>Tensorflow Serving Server</li>
+<li>Tensorflow Serving Client</li>
+<li>Tensorflow Serving Application</li>
+</ol>
+<p>여기서는 1~2은 Part. A이고 3는 Part. B에서 다루도록 하겠다.<br><br></p>
+<h3 id="Tensorflow-Serving-Server"><a href="#Tensorflow-Serving-Server" class="headerlink" title="Tensorflow Serving Server"></a>Tensorflow Serving Server</h3><hr>
+<p>Tensorflow Serving은 tensorflow로 학습시킨 model을 보다 효율적으로 배포하기 위해 나온 것이다. 이번 포스트에서는 docker를 이용하여 학습시킨 ViT model을 배포하고 HTTP를 통해서 입력과 출력을 주고 받는 예제를 만들어 보겠다.</p>
+<p>우선 그러려면 Tensorflow Serving이 뭔지부터 알아야 한다. Tensorflow serving은 tensorflow로 만들어진 모델을 서비스에 배포하기 위해서 만들어진 하나의 application이라고 생각하면 된다. </p>
+<p align="center"><img src="https://kimh060612.github.io/img/Serving.png" width="100%"></p>
+
+<p>위의 그림과 같이 Docker와 함께 사용하여 우리가 만든 모델을 Tensorflow Serving에 넣어주면 HTTP/HTTPS/gRPC를 통해서 model의 inference 결과를 받아볼 수 있다.</p>
+<p>종래의 Tensorflow model serving의 경우, 대체적으로 flask를 사용해서 REST API 형식으로 Serving을 했었다. 하지만 그것보다는 tensorflow serving의 성능이 좋다. 이유는 대체적으로 여러 요인이 있지만 대표적으로는 2가지가 있다.</p>
+<ol>
+<li>python의 overhead 해소</li>
+<li>HTTP/2.0을 사용하는 gRPC를 지원하기 때문</li>
+</ol>
+<p>즉, tensorflow serving을 제일 완벽하게 활용하려면 gRPC를 사용해야 하지만 현재로써는 필자의 지식이 부족하기 때문에 일단 HTTP 통신을 사용해 보도록 하겠다. 하지만 그렇더라도 tensorflow serving이 일반 flask를 활용한 serving 보다는 빠르다.</p>
+<p>그렇다면 어떻게 Docker를 사용하여 우리가 만든 모델을 Tensorflow Serving으로 배포할 수 있을까?<br>우선 예제를 보기 전에 자신만의 모델을 만들자. 필자는 ViT를 예시로 들겠다.<br>모델을 만들었다면, 다음과 같은 폴더 구조에 .pb와 함께 다양한 파일들이 모델로써 저장될 것이다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ViT/1/</span><br><span class="line">├── assets</span><br><span class="line">├── variables</span><br><span class="line">│   ├── variables.data-00000-of-00001</span><br><span class="line">│   └── variables.index</span><br><span class="line">├── keras_metadata.pb</span><br><span class="line">└── saved_model.pb</span><br></pre></td></tr></table></figure>
+<p>그렇다면 우리는 이 폴더를 Docker Container에 mount해주고 8501번 포트를 열어주면 된다. 다음과 같은 명령어로 말이다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -p 8501:8501 --name tf_serving -v /path/to/your/model/ViT/:/models/ViT -e MODEL_NAME=ViT -t tensorflow/serving &amp;</span><br></pre></td></tr></table></figure>
+<p>그렇다면 준비 완료이다. 이제 Tensorflow Serving으로 ViT 모델을 Serving한 것이다.<br>물론, 실제 production 할때는 이따구로 하면 큰일난다. 어디까지 예제로 만들기 위해서 간단하게 만든 것이다.</p>
+<h3 id="Tensorflow-Serving-Client"><a href="#Tensorflow-Serving-Client" class="headerlink" title="Tensorflow Serving Client"></a>Tensorflow Serving Client</h3><hr>
+<p>이제 띄워놓은 ViT model에게 HTTP를 통해서 Shiba견의 이미지를 보내고 결과를 받아와보자.</p>
+<p align="center"><img src="https://kimh060612.github.io/img/Shiba.jpg" width="100%"></p>
+
+<p><del>(머스크형 제발 닥쳐줘)</del></p>
+<p>한번 예제 소스코드를 다음과 같이 짜 보았다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">image = cv2.imread(<span class="string">&quot;./image/Shiba.jpg&quot;</span>)</span><br><span class="line">image = cv2.resize(image, dsize=(<span class="number">32</span>, <span class="number">32</span>))</span><br><span class="line">image = np.expand_dims(image, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">data = json.dumps(&#123;<span class="string">&quot;signature_name&quot;</span>: <span class="string">&quot;serving_default&quot;</span>, <span class="string">&quot;instances&quot;</span>: image.tolist()&#125;)</span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&quot;content-type&quot;</span>: <span class="string">&quot;application/json&quot;</span>&#125;</span><br><span class="line">json_response = requests.post(<span class="string">&#x27;http://localhost:8501/v1/models/ViT:predict&#x27;</span>, data=data, headers=headers)</span><br><span class="line">predictions = np.array(json.loads(json_response.text)[<span class="string">&quot;predictions&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(np.argmax(predictions[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+<p>우선 데이터는 위와 같은 형식을 유지해주면 된다. 그리고 POST method로 HTTP request를 보내면 결과 tensor가 text 형식으로 온다.</p>
+<p>우리는 그걸 json으로 바꾸고 안에 있는 list를 꺼내서 inference 결과를 받으면 되는 것이다.</p>
+<p>다음 포스트에서는 이걸 이용해서 간단한 application을 flask로 만들어보는 시간을 가져보자.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+              <a href="/tags/Tensorflow2/" rel="tag"># Tensorflow2</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/05/ViT-B/" rel="prev" title="Vision Transformer 강의 내용 part.B">
+      <i class="fa fa-chevron-left"></i> Vision Transformer 강의 내용 part.B
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/05/Serve-B/" rel="next" title="Deep learning Model Serving 강의 part.B">
+      Deep learning Model Serving 강의 part.B <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Index"><span class="nav-number">1.</span> <span class="nav-text">Index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tensorflow-Serving-Server"><span class="nav-number">2.</span> <span class="nav-text">Tensorflow Serving Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tensorflow-Serving-Client"><span class="nav-number">3.</span> <span class="nav-text">Tensorflow Serving Client</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Michael Kim</p>
+  <div class="site-description" itemprop="description">Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kimh060612" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kimh060612" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:kimh060612@khu.ac.kr" title="E-Mail → mailto:kimh060612@khu.ac.kr" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Michael Kim</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://michael-blog-1.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://kimh060612.github.io/2022/03/05/Serve-A/";
+    this.page.identifier = "2022/03/05/Serve-A/";
+    this.page.title = "Deep learning Model Serving 강의 part.A";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://michael-blog-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

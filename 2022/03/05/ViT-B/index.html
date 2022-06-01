@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+<meta name="google-site-verification" content="L0ZN3xykszl3pBQeJ5QFwk98KKJ8kHDzGSBLhEtwmNU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kimh060612.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="본 포스트는 블로그와논문 “An Image is Worth 16x16 Words: Transformers for iamge recognition at scale”을 참조하여 작성되었음을 알립니다. Index CNN의 종말 Vision Transformer의 구조 ViT Inspection Embedding Filters Positional Encoding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vision Transformer 강의 내용 part.B">
+<meta property="og:url" content="https://kimh060612.github.io/2022/03/05/ViT-B/index.html">
+<meta property="og:site_name" content="Michael&#39;s Study Blog">
+<meta property="og:description" content="본 포스트는 블로그와논문 “An Image is Worth 16x16 Words: Transformers for iamge recognition at scale”을 참조하여 작성되었음을 알립니다. Index CNN의 종말 Vision Transformer의 구조 ViT Inspection Embedding Filters Positional Encoding">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-05T10:28:46.000Z">
+<meta property="article:modified_time" content="2022-05-29T15:00:32.842Z">
+<meta property="article:author" content="Michael Kim">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="Tensorflow2">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://kimh060612.github.io/2022/03/05/ViT-B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Vision Transformer 강의 내용 part.B | Michael's Study Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/rss2.xml" title="Michael's Study Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Michael's Study Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Backend Engineering & Deep learning!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives<span class="badge">19</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kimh060612.github.io/2022/03/05/ViT-B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Michael Kim">
+      <meta itemprop="description" content="Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michael's Study Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vision Transformer 강의 내용 part.B
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-05 19:28:46" itemprop="dateCreated datePublished" datetime="2022-03-05T19:28:46+09:00">2022-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-30 00:00:32" itemprop="dateModified" datetime="2022-05-30T00:00:32+09:00">2022-05-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/03/05/ViT-B/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/05/ViT-B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><em>본 포스트는 <a target="_blank" rel="noopener" href="https://medium.com/towards-data-science/is-this-the-end-for-convolutional-neural-networks-6f944dccc2e9">블로그</a>와논문 “An Image is Worth 16x16 Words: Transformers for iamge recognition at scale”을 참조하여 작성되었음을 알립니다.</em></p>
+<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><ol>
+<li><del>CNN의 종말</del></li>
+<li><del>Vision Transformer의 구조</del></li>
+<li><del>ViT Inspection</del><ul>
+<li><del>Embedding Filters</del></li>
+<li><del>Positional Encoding</del></li>
+<li><del>Attention Distance</del></li>
+</ul>
+</li>
+<li>practice</li>
+</ol>
+<p><br></p>
+<h3 id="practice"><a href="#practice" class="headerlink" title="practice"></a>practice</h3><hr>
+<p>이제 필자의 Deep learning 포스트도 꽤나 현대적인 수준의 모델을 다루게 되었다. 그리고 이번에는 2019년도에 나온 ViT의 구현이다. ViT의 구현은 생각보다 어렵지 않다. 왜냐면 Transformer의 연장선이기 때문이다. 따라서 기존 Transformer의 부분인 Multi-Head Attention과 Encoder 부분이 아닌 다른 부분만 이 포스트에서 다루도록 하겠다.</p>
+<p>먼저, ViT 모델부터 보고 시작하자.</p>
+<p><em>file: model/model.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ViT</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, patch_size, out_dim, mlp_dim, </span></span><br><span class="line"><span class="params">                 num_layer, d_model, num_haed, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(ViT, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.patch_size = patch_size</span><br><span class="line">        </span><br><span class="line">        self.patch_gen = GeneratePatch(patch_size=patch_size)</span><br><span class="line">        self.linear_proj = keras.layers.Dense(d_model, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        self.encoders = [ Encoder(d_model=d_model, num_head=num_haed, d_ff=d_ff, drop_out_prob=drop_out_prob, name = <span class="string">&quot;Encoder_&quot;</span> + <span class="built_in">str</span>(i + <span class="number">1</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_layer) ]</span><br><span class="line">        </span><br><span class="line">        self.dense_mlp = keras.layers.Dense(mlp_dim, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        self.dropout = keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        self.dense_out = keras.layers.Dense(out_dim, activation=<span class="string">&quot;softmax&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">build</span>(<span class="params">self, x_shape</span>):</span><br><span class="line">        num_patch = (x_shape[<span class="number">1</span>] * x_shape[<span class="number">2</span>]) // (self.patch_size * self.patch_size) </span><br><span class="line">        </span><br><span class="line">        self.pos_emb = self.add_weight(<span class="string">&quot;pos_emb&quot;</span>, shape=(<span class="number">1</span>, num_patch + <span class="number">1</span>, self.d_model))</span><br><span class="line">        self.class_emb = self.add_weight(<span class="string">&quot;class_emb&quot;</span>, shape=(<span class="number">1</span>, <span class="number">1</span>, self.d_model)) </span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, training</span>):</span><br><span class="line">        </span><br><span class="line">        patches = self.patch_gen(x)</span><br><span class="line">        x = self.linear_proj(patches)</span><br><span class="line">        </span><br><span class="line">        batch_size = tf.shape(x)[<span class="number">0</span>]</span><br><span class="line">        class_emb = tf.broadcast_to(self.class_emb, [batch_size, <span class="number">1</span>, self.d_model])    </span><br><span class="line">        x = tf.concat([class_emb, x], axis=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        x = x + self.pos_emb</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> self.encoders:</span><br><span class="line">            x = layer(x, training)</span><br><span class="line">        </span><br><span class="line">        x = self.dense_mlp(x[:, <span class="number">0</span>, :])</span><br><span class="line">        x = self.dropout(x)</span><br><span class="line">        x = self.dense_out(x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+<p>먼저, 시작 전에 이번에는 다른 모델들과는 사뭇 다르게 build 함수를 overriding해서 사용하였다. 그 이유는 뭐냐? 이전에 ViT의 정의를 보면 명확해 진다. </p>
+<ol>
+<li>$x_{class}$는 BERT에서 사용되는 것과 똑같은 token이다. 이의 구현 방법은 part.B에서 더욱 자세히 다루어 보도록 하겠다.</li>
+<li>각 Image Patch들은 1 개의 FCNN layer를 거치게 된다. 이때, Bias는 없다.</li>
+<li>위 표기 중에 $LN$은 Layer Normalization의 약자이다. </li>
+<li>Encoder를 $L$번 반복하고 나온 결과를 MLP에 넣는다.</li>
+<li>최종 결과에 다시 한번 Layer Normalization을 진행한다. 이때, sequence의 마지막 Component만을 가져와서 진행한다.</li>
+</ol>
+<p>여기서 논문을 보면 learnable class token $x<em>{class}$라고 나온다. 한마디로 맨 앞에 꼽사리 끼는 $x</em>{class}$ token 또한 학습이 가능한 weight여야 한다는 것이다. 그리고 여기서는 positional encoding 또한 학습이 가능한 weight 여야 한다. 그래서 입력 dimension을 사전에 받아서 모델을 빌드할때 이들을 정의해 줘야한다.</p>
+<p>그리고 Image를 Flatten하고 Dense에 넣어줘야 하는데, 이 과정은 다른 layer를 통해서 진행할 것이다. 다음을 보자.</p>
+<p><em>file: model/layer.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">GeneratePatch</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, patch_size</span>):</span><br><span class="line">        <span class="built_in">super</span>(GeneratePatch, self).__init__()</span><br><span class="line">        self.patch_size = patch_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, images</span>):</span><br><span class="line">        batch_size = tf.shape(images)[<span class="number">0</span>]</span><br><span class="line">        patches = tf.image.extract_patches(images=images, </span><br><span class="line">                                        sizes=[<span class="number">1</span>, self.patch_size, self.patch_size, <span class="number">1</span>], </span><br><span class="line">                                        strides=[<span class="number">1</span>, self.patch_size, self.patch_size, <span class="number">1</span>], rates=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">&quot;VALID&quot;</span>)</span><br><span class="line">        patch_dims = patches.shape[-<span class="number">1</span>]</span><br><span class="line">        patches = tf.reshape(patches, [batch_size, -<span class="number">1</span>, patch_dims]) <span class="comment">#here shape is (batch_size, num_patches, patch_h*patch_w*c) </span></span><br><span class="line">        <span class="keyword">return</span> patches</span><br></pre></td></tr></table></figure>
+<p>이 layer를 이용해서 image를 patch로 나눈 뒤에 flatten하고 ViT에서 Dense를 거쳐서 Transformer의 입력으로써 사용한다.<br>나머지는 Transformer와 같다. 딱히 다를 것이 없다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+              <a href="/tags/Tensorflow2/" rel="tag"># Tensorflow2</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/05/ViT-A/" rel="prev" title="Vision Transformer 강의 내용 part.A">
+      <i class="fa fa-chevron-left"></i> Vision Transformer 강의 내용 part.A
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/05/Serve-A/" rel="next" title="Deep learning Model Serving 강의 part.A">
+      Deep learning Model Serving 강의 part.A <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Index"><span class="nav-number">1.</span> <span class="nav-text">Index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#practice"><span class="nav-number">2.</span> <span class="nav-text">practice</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Michael Kim</p>
+  <div class="site-description" itemprop="description">Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kimh060612" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kimh060612" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:kimh060612@khu.ac.kr" title="E-Mail → mailto:kimh060612@khu.ac.kr" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Michael Kim</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://michael-blog-1.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://kimh060612.github.io/2022/03/05/ViT-B/";
+    this.page.identifier = "2022/03/05/ViT-B/";
+    this.page.title = "Vision Transformer 강의 내용 part.B";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://michael-blog-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

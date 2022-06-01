@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+<meta name="google-site-verification" content="L0ZN3xykszl3pBQeJ5QFwk98KKJ8kHDzGSBLhEtwmNU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kimh060612.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="본 포스트는 Hands-on Machine learning 2nd Edition, CS231n, Tensorflow 공식 document를 참조하여 작성되었음을 알립니다. Index Definition of Recurrent Neural Network(RNN) Back Propagation of RNN Partice  여기서는 1,2는 Part. A이고 3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Recurrent Neural Network 강의 내용 part.A">
+<meta property="og:url" content="https://kimh060612.github.io/2022/03/05/RNN-A/index.html">
+<meta property="og:site_name" content="Michael&#39;s Study Blog">
+<meta property="og:description" content="본 포스트는 Hands-on Machine learning 2nd Edition, CS231n, Tensorflow 공식 document를 참조하여 작성되었음을 알립니다. Index Definition of Recurrent Neural Network(RNN) Back Propagation of RNN Partice  여기서는 1,2는 Part. A이고 3">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kimh060612.github.io/img/RNN.png">
+<meta property="og:image" content="https://kimh060612.github.io/img/RNND.png">
+<meta property="og:image" content="https://kimh060612.github.io/img/RNND2.png">
+<meta property="og:image" content="https://kimh060612.github.io/img/RNNDBPTT.png">
+<meta property="article:published_time" content="2022-03-05T10:26:50.000Z">
+<meta property="article:modified_time" content="2022-05-29T15:00:32.841Z">
+<meta property="article:author" content="Michael Kim">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="Mathematics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kimh060612.github.io/img/RNN.png">
+
+<link rel="canonical" href="https://kimh060612.github.io/2022/03/05/RNN-A/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Recurrent Neural Network 강의 내용 part.A | Michael's Study Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/rss2.xml" title="Michael's Study Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Michael's Study Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Backend Engineering & Deep learning!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives<span class="badge">19</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kimh060612.github.io/2022/03/05/RNN-A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Michael Kim">
+      <meta itemprop="description" content="Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michael's Study Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Recurrent Neural Network 강의 내용 part.A
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-05 19:26:50" itemprop="dateCreated datePublished" datetime="2022-03-05T19:26:50+09:00">2022-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-30 00:00:32" itemprop="dateModified" datetime="2022-05-30T00:00:32+09:00">2022-05-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/03/05/RNN-A/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/05/RNN-A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><em>본 포스트는 Hands-on Machine learning 2nd Edition, CS231n, Tensorflow 공식 document를 참조하여 작성되었음을 알립니다.</em></p>
+<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><ol>
+<li>Definition of Recurrent Neural Network(RNN)</li>
+<li>Back Propagation of RNN</li>
+<li>Partice</li>
+</ol>
+<p>여기서는 1,2는 Part. A이고 3은 Part. B에서 다루도록 하겠다.<br><br></p>
+<h3 id="Definition-of-Recurrent-Neural-Network-RNN"><a href="#Definition-of-Recurrent-Neural-Network-RNN" class="headerlink" title="Definition of Recurrent Neural Network(RNN)"></a>Definition of Recurrent Neural Network(RNN)</h3><hr>
+<p>RNN(Recurrent Neural Network)은 시계열 데이터를 처리하는데 특화된 신경망 구조이다.<br>이는 전의 입력이 연속해서 다음 입력에 영향을 주는 신경망 구조로써, 같은 구조가 계속 순환되어 나타나기 때문에 이러한 이름이 붙어져 있다.<br>다음 그림을 보자. </p>
+<p align="center"><img src="https://kimh060612.github.io/img/RNN.png" width="100%"></p>
+
+<p>하지만 이 그림으로는 자세한 구조까지는 잘 모르겠다. 그래서 필자가 직접 그린 그림을 보면서 설명하도록 하겠다. 말해두겠지만 필자는 그림을 심각하게 못 그리니 양해 바란다.</p>
+<p align="center"><img src="https://kimh060612.github.io/img/RNND.png" width="100%"></p>
+
+<p>이처럼 각 RNN Cell에 FCNN의 Unit이 들어가 있는 형식으로 구현된다. 이의 Feed Forward 연산을 생각해 보면 정말 간단하다.</p>
+<script type="math/tex; mode=display">
+z_t = f(z_{t - 1}W_{re} + x_tW_{in} + b)
+\tag{equation 1}</script><p>$equation\space 1$에서 각 변수들의 정의는 다음과 같다.</p>
+<blockquote>
+<p>Definition 1</p>
+</blockquote>
+<ul>
+<li>$z_t$: time step $t$에 unit의 값에 activation function에 넣은 값</li>
+<li>$W_{re}$: Reccurent 가중치</li>
+<li>$W_{in}$: input layer에서의 가중치</li>
+<li>$x_t$: input vector</li>
+</ul>
+<p>그림으로 정리하면 대충 다음과 같다.</p>
+<p align="center"><img src="https://kimh060612.github.io/img/RNND2.png" width="100%"></p>
+
+<p>결국 이렇게 Sequential한 데이터 $x$에 대해서 Sequential한 output $y$를 뽑을 수 있는 것이다.</p>
+<h3 id="Back-Propagation-of-RNN"><a href="#Back-Propagation-of-RNN" class="headerlink" title="Back Propagation of RNN"></a>Back Propagation of RNN</h3><hr>
+<p>RNN의 Back Propagation 방법은 다음의 2가지가 있다. </p>
+<ul>
+<li>Back Propagation Through Time - (BPTT)</li>
+<li>Real Time Recurrent Learning (RTRL)</li>
+</ul>
+<p>여기서는 BPTT만을 다루도록 하겠다. RNN을 그렇게 자세하게 다루지 않는 이유는 FCNN의 연장선 느낌이 강해서이고 또한 현대에서는 딱히 잘 쓰이지 않기 때문이다. 그냥 지적 유희를 위해서 또는 기본기를 잘 닦기 위해서로만 읽어주기를 바란다.</p>
+<p>또는 AutoGrad 계열의 알고리즘을 공부하는 사람들은 미분 그래프를 사용한 AutoGrad이전에는 이런 식으로 역전파 알고리즘을 구현했었구나 라고 역사책 읽는 느낌으로 읽어주면 매우 감사하겠다. </p>
+<p>이러한 RNN의 Back Propagation을 진행하기 위해서는 다음을 구하면 된다.</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \frac{\partial E}{\partial w^{out}_{ij}} =\space ? \\
+    \frac{\partial E}{\partial w^{re}_{ij}} = \space ? \\
+    \frac{\partial E}{\partial w^{in}_{ij}} = \space?
+\end{aligned}
+\tag{definition 2}</script><p>이제 위 미분들에 chain rule을 적용해 보자. 그렇다면 다음과 같이 표현할 수 있다.</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial w^{out}_{ij}} = \sum^T_{t = 1} \frac{\partial E}{\partial v^{out}_{i}} \frac{\partial v^{out}_{i}}{\partial w^{out}_{ij}}
+\tag{equation 2}</script><script type="math/tex; mode=display">
+\frac{\partial E}{\partial w^{re}_{ij}} = \sum^T_{t = 1} \frac{\partial E}{\partial u^{t + 1}_{i}} \frac{\partial u^{t + 1}_{i}}{\partial w^{re}_{ij}}
+\tag{equation 3}</script><script type="math/tex; mode=display">
+\frac{\partial E}{\partial w^{in}_{ij}} = \sum^T_{t = 1} \frac{\partial E}{\partial u^{in}_{i}} \frac{\partial u^{in}_{i}}{\partial w^{out}_{ij}}
+\tag{equation 4}</script><p>자, 그렇다면 여기서 delta를 정의해서 일반화된 delta 규칙을 적용해 보아야 Back Propagation이 효율적으로 될 것이다. </p>
+<p>그렇다면 각 미분들에 대한 delta는 다음과 같이 정의될 수 있다.</p>
+<script type="math/tex; mode=display">
+\delta^{out}_{k,t} = \frac{\partial E}{\partial v^t_k} = \frac{\partial E}{\partial y^t_k} \frac{\partial y^t_k}{\partial v^t_k} = \frac{\partial E}{\partial y^t_k} f'(v^t_k)
+\tag{definition 3}</script><p>input layer에서의 가중치는 output layer처럼 FCNN과 완전히 같다. 굳이 적어두지는 않도록 하겠다. 그렇다면 남은 것은 recurrent layer에서의 delta이다. 전개해보면 대략 다음과 같이 표현할 수 있다.</p>
+<p align="center"><img src="https://kimh060612.github.io/img/RNNDBPTT.png" width="100%"></p>
+
+<p>이를 수식으로 표현하면 다음과 같이 표현할 수 있다.</p>
+<script type="math/tex; mode=display">
+\delta^{re}_{j,t} = \sum^{n_{out}}_{i = 1} \frac{\partial E}{\partial v^t_i} \frac{\partial v^t_i}{\partial u^t_j} + \sum^{n_{re}}_{i = 1} \frac{\partial E}{\partial u^{t + 1}_i} \frac{\partial u^{t + 1}_i}{\partial u^t_j}
+\tag{definition 4}</script><p>각 Summation Term들의 delta를 이용해서 표현해 보면 다음과 같다.</p>
+<script type="math/tex; mode=display">
+\delta^{re}_{j,t} = \sum^{n_{out}}_{i = 1} \delta^{out}_{i,t} \frac{\partial v^t_i}{\partial u^t_j} + \sum^{n_{re}}_{i = 1} \delta^{re}_{i, t} \frac{\partial u^{t + 1}_i}{\partial u^t_j}  \\ 
+= \sum^{n_{out}}_{i = 1} \delta^{out}_{i,t} w^{out}_{ij} f'(u^t_j) + \sum^{n_{re}}_{i = 1} \delta^{re}_{i, t} w^{re}_{ij} f'(u^t_j)
+\tag{equation 4}</script><p>즉, 이와 같이 RNN Cell의 기본 형태의 BPTT는 정말 단순하게도 FCNN의 연장선이다. 별게 없다.</p>
+<p>그리고 이의 변형판으로 시간을 분할해서 Update하는 방법도 있다. 이를 Truncated BPTT라고 하는데 관심이 있다면 찾아보도록 하자. 이것도 진짜 별거 없다.</p>
+<p>그저 위의 미분에서 시간 term을 잘라서 update 해주면 된다.</p>
+<p>이걸로 RNN 또한 끝이 났다. 다음 파트에서는 이를 구현해 보도록 하겠다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+              <a href="/tags/Mathematics/" rel="tag"># Mathematics</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/05/RNN-B/" rel="prev" title="Recurrent Neural Network 강의 내용 part.B">
+      <i class="fa fa-chevron-left"></i> Recurrent Neural Network 강의 내용 part.B
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/05/Optimization-A/" rel="next" title="Optimization 강의 내용 part.A">
+      Optimization 강의 내용 part.A <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Index"><span class="nav-number">1.</span> <span class="nav-text">Index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Definition-of-Recurrent-Neural-Network-RNN"><span class="nav-number">2.</span> <span class="nav-text">Definition of Recurrent Neural Network(RNN)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Back-Propagation-of-RNN"><span class="nav-number">3.</span> <span class="nav-text">Back Propagation of RNN</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Michael Kim</p>
+  <div class="site-description" itemprop="description">Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kimh060612" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kimh060612" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:kimh060612@khu.ac.kr" title="E-Mail → mailto:kimh060612@khu.ac.kr" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Michael Kim</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://michael-blog-1.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://kimh060612.github.io/2022/03/05/RNN-A/";
+    this.page.identifier = "2022/03/05/RNN-A/";
+    this.page.title = "Recurrent Neural Network 강의 내용 part.A";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://michael-blog-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
