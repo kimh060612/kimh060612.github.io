@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/RNN-B/</loc>
+    <loc>https://kimh060612.github.io/2022/03/05/Serve-A/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/Serve-A/</loc>
+    <loc>https://kimh060612.github.io/2022/03/05/RNN-B/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -128,15 +128,6 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/FCNN-A/</loc>
-    
-    <lastmod>2022-05-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://kimh060612.github.io/2022/03/05/FCNN-B/</loc>
     
     <lastmod>2022-05-29</lastmod>
@@ -146,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/13/OS-Start/</loc>
+    <loc>https://kimh060612.github.io/2022/03/05/FCNN-A/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -156,6 +147,15 @@
   
   <url>
     <loc>https://kimh060612.github.io/2022/03/13/Http-Start/</loc>
+    
+    <lastmod>2022-05-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kimh060612.github.io/2022/03/13/OS-Start/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
