@@ -200,7 +200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-06-15 20:18:01" itemprop="dateModified" datetime="2022-06-15T20:18:01+09:00">2022-06-15</time>
+                <time title="Modified: 2022-06-15 20:49:20" itemprop="dateModified" datetime="2022-06-15T20:49:20+09:00">2022-06-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -445,12 +445,9 @@ w_t^{[k]} = \mathcal{N}(z_t | x^{[k]}_t, \bf{\mu}_{t, 1}^{[k]}, \bf{\Sigma}_{t, 
 X_T^*, m^* = \argmax_{X_t, m} \ln p(X_T,m |Z_T,U_t)
 \tag{equation 2}</script><p>equation 1을 point-landmark example에서 Gaussian 추정을 적용하여 다음과 같은 quadratic form으로 표현할 수 있다. </p>
 <script type="math/tex; mode=display">
-\begin{align} &
-&\ln p(X_T,m |Z_T,U_t) &= \text{const} + 
-&\sum_t [x_t - g(x_{t - 1}, u_t)]^TR_t^{-1}[x_t - g(x_{t - 1}, u_t)] +
-&\sum_t  [z_t - h(x_t, m)]^TQ_t^{-1}[z_t - h(x_t, m)]
-\end{align} 
-
+\ln p(X_T,m |Z_T,U_t) = \text{const} + \\
+\sum_t [x_t - g(x_{t - 1}, u_t)]^TR_t^{-1}[x_t - g(x_{t - 1}, u_t)] + \\ 
+\sum_t  [z_t - h(x_t, m)]^TQ_t^{-1}[z_t - h(x_t, m)]
 \tag{equation 3}</script><p>위 equation 3를 최적화 하는 것이 SLAM문제를 푸는 것으로 연결된다. 흔한 선택지로는 sparse Cholesky &amp; QR decomposition이고, Gradient Descent나 conjugate gradient 방법도 좋은 선택지이다.</p>
 <p>Graphical SLAM은 EKF보다 훨씬 더 넓은 map으로 scale을 넓힐 수 있다는 것이 장점이다. 몇몇 추정을 더해야하기는 하지만, EKF에 비하면 Graph method의 update에 필요한 time-complexity와 space-complexity는 각각 constant/linear하다.</p>
 <h4 id="Relation-of-Paradigms"><a href="#Relation-of-Paradigms" class="headerlink" title="Relation of Paradigms"></a>Relation of Paradigms</h4><ul>
