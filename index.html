@@ -129,17 +129,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags<span class="badge">14</span></a>
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags<span class="badge">15</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives<span class="badge">20</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives<span class="badge">21</span></a>
 
   </li>
   </ul>
@@ -165,6 +165,434 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kimh060612.github.io/2022/10/09/mathematical-statistics-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Michael Kim">
+      <meta itemprop="description" content="Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michael's Study Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/09/mathematical-statistics-1/" class="post-title-link" itemprop="url">Mathematical Statistics Chapter 1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-09 22:48:20" itemprop="dateCreated datePublished" datetime="2022-10-09T22:48:20+09:00">2022-10-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematical-Statistics/" itemprop="url" rel="index"><span itemprop="name">Mathematical Statistics</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/10/09/mathematical-statistics-1/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/10/09/mathematical-statistics-1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h2><ol>
+<li>Introduction</li>
+<li>What is Set?</li>
+<li>Probability Set function</li>
+<li>Conditional Probability and Independency</li>
+<li>Random Variables</li>
+<li>Discrete Random Variables</li>
+<li>Continuous Random Variables</li>
+<li>Expectation of Random Variable</li>
+<li>Special Expectation</li>
+<li>Important Inequality</li>
+</ol>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>이 카테고리의 글들은 Robert V. Hogg, Joseph W. McKean의 Mathematical Statistics를 정리하는 것이다.<br>여기서 논의할 수리 통계학에서는 엄밀한 확률론이나 심도 깊은 실 해석학의 내용은 직관적인 설명만으로 퉁치고 넘어갈 예정이다. 더 이상 깊이 파는 내용은 Appendix, 또는 다른 추가적인 포스트로 보충 설명을 하도록 하겠다.<br>1장의 경우에는 고등학생도 이해할 수 있는 내용만 나오므로 1개의 포스트에 내용을 욱여 넣을 예정이지만, 다른 포스트에서는 그런 일이 없을 것이다.<br>그리고 주요 예제 및 문제들은 챕터의 마지막 파트의 포스트로 빼서 다룰 것이다.<br>수리 통계학은 아주 현재 CS의 응용 분야에 빠질 수 없는 내용이다. 따라서 필자도 이 포스트부터는 진지하게 내용을 전개할 것이고 실수, 오타, 기타 틀린 내용은 언제나 About 페이지의 개인 정보로 연락을 주면 고쳐 나가도록 하겠다.</p>
+<p>또한, 이 책에서 나오는 예제 R 코드는 전부 Python (with numpy)로 바꿔서 진행할 예정이다. 이유는 필자가 R을 별로 안 좋아하기 때문이다 ㅎㅎ.</p>
+<p>마지막으로, 이 글의 예상 독자들은 당연히 고등학교 수학은 다 뗀 사람들이다. 아직 이 조건에 충족하지 못한 사람들은 아쉽지만 고등학교 수학부터 차근 차근 공부하는 것을 추천한다. 너무 낙담하지 말자. 원래 수학은 차근차근 해 나가는 학문이다. 참고로 필자는 00년생이다. 그리고 19년도에 입시를 마쳤다. 그 이후에는 교육 과정이 축소되었다고 알고 있는데, 필자때의 고등 수학을 기준으로 삼을 것이다. (참고로 자랑은 아니지만 필자는 고등학생때 미적분학/선형 대수학을 독학했다. “이거 기준으로 고등 수학을 정의할 것이다”)</p>
+<h2 id="What-is-Set"><a href="#What-is-Set" class="headerlink" title="What is Set?"></a>What is Set?</h2><p>우선 확률, 통계를 논하기 전에 가장 기초적인 Mathematical Notation인 Set부터 짚고 넘어갈 필요가 있다.</p>
+<blockquote>
+<p>“집합”이란, 어떤 element의 모임을 설명하는 것이다.</p>
+</blockquote>
+<p>너무 집합에 대해서 복잡하게 생각하지 말자. 집합(Set/Collection)은 어떤 “것”들의 모임이다. 예를 들어, 자연수들의 집합($\mathbb{N}$)같은 것이 있을 수 있고 실수의 집합($\mathbb{R}$)이 있을 수 있다. </p>
+<p>이때, 이러한 집합중에서 “셀 수 있는” 원소를 가지고 있는 것을 가산형(countable) 집합 이라고 한다. 유의한 점은 가산형 집합이라는 워딩때문에 해당 집합이 유한한 원소를 가져야만 한다는 것이 아니라는 것이다. 이에 대해서는 나중에 독자들이 꼭 한번 생각해 보는 것을 추천한다.</p>
+<blockquote>
+<p>예를 들어서, 양의 유리수의 집합은 가산형 집합이다. 왜일까?</p>
+</blockquote>
+<p align="center"><img src="https://kimh060612.github.io/img/countable.png" width="100%"></p>
+
+<p>위 그림을 보면 그 답이 나온다. 양의 유리수는 2개의 자연수의 쌍으로 표현할 수 있기 때문에 가산형 집합으로 분류할 수 있다.</p>
+<p>이러한 집합 중에서 우리가 봐야할 어떠한 “사건”의 전체에 해당하는 집합을 우리는 <em>표본 집합</em>이라고 부르고 앞으로는 $\mathcal{C}$라고 표현할 것이다. 또한, 어떠한 원소들도 포함하지 않는 집합을 <em>공집합</em>이라고 부르고 $\empty$로 표기할 것이다.<br>이를 다시 말하면, “사건”은 $\mathcal{C}$의 부분 집합이다. 아주 중요한 개념이지만 해당 내용은 차차 엄밀하게 다루도록 하고 지금은 그렇구나 하고 넘어가면 된다.</p>
+<p>이러한 집합을 표현하는데 있어서 Venn Diagram이 유용하게 사용된다. 이는 다음과 같은 집합의 표현 방식중 하나이다.</p>
+<p align="center"><img src="https://kimh060612.github.io/img/Venndiagram.png" width="100%"></p>
+
+<p>대충 위와 같은 그림이라고 보면 된다. 이에 대한 내용은 이 글을 읽는 독자들은 다 알고 있으리라 추측하고 넘어 가겠다.  </p>
+<p>집합에도 여러가지 연산이 존재한다. 이 파트에서는 간단하게 어떤 연산들이 있는지를 알아보도록 할 것이다.</p>
+<p>우선, 어떤 집합 $A$, $B$가 있다고 가정해보자. 그렇다면 다음의 정의가 성립한다.</p>
+<ol>
+<li>Complement Set ($A^{\complement}$) : $\mathcal{C}$에서 $A$가 아닌 원소들의 집합을 뜻한다. 즉, $A^{\complement} = {x \in \mathcal{C} | x \notin A}$ </li>
+<li>집합 $A$의 각 원소가 또한 집합 $B$의 원소이면 집합 $A$는 집합 $B$의 부분 집합이라고 하고 다음과 같이 표현한다. $A \subset B$</li>
+<li>$A$와 $B$의 합집합이라고 하면 $A$에 있거나 $B$에 있거나 아니면 둘 다에 있는 원소들의 집합이고 다음과 같이 표기한다. $A \cup B$</li>
+<li>$A$와 $B$의 교집합이라고 하면 $A$와 $B$ 둘 다에 있는 원소들의 집합이고 다음과 같이 표기한다. $A \cap B$</li>
+<li>만약, $A \cap B = \empty$이면, $A$와 $B$를 배반 사건이라고 부른다.</li>
+</ol>
+<p>이러한 집합의 연산에도 여러가지 연산 규칙이 적용될 수 있다. 대표적으로,</p>
+<ol>
+<li>배분 법칙</li>
+<li>교환 법칙</li>
+<li>드모르간의 법칙</li>
+</ol>
+<p>이 있는데, 상세한 내용은 알 것이라고 생각하고 굳이 구구절절 설명은 안 하도록 하겠다. 그 대신 이 부분을 짚고 넘어가자.</p>
+<script type="math/tex; mode=display">
+\bigcup_{n = 1}^{\infty} A_n = A_1 \cup A_2 \cup \dots
+\tag{definition 1}</script><script type="math/tex; mode=display">
+\bigcap_{n = 1}^{\infty} A_n = A_1 \cap A_2 \cap \dots
+\tag{definition 2}</script><p>앞으로 이러한 식으로 연속된 집합의 합/교 집합을 표현할 것이다.</p>
+<p>이러한 집합열중에는 <strong>단조(monotone)</strong> 인 집합열도 있는데, 여기에는 2가지 유형이 있다. </p>
+<ol>
+<li>$n \in \mathbb{N}$에 대하여 $A<em>n \subset A</em>{n+1}$ 인 집합열 ${A_n}$을 <strong>비감소(nondecreasing)</strong> 또는 <strong>위로 중첩(nested upper)</strong> 라고 한다.</li>
+<li>$n \in \mathbb{N}$에 대하여 $A_{n+1} \subset A_n$ 인 집합열 ${A_n}$을 <strong>비증가(nonincreasing)</strong> 또는 <strong>아래로 중첩(nested downward)</strong> 라고 한다.</li>
+</ol>
+<p>이러한 경우에는 다음과 같음이 성립한다.</p>
+<ul>
+<li>비감소의 경우</li>
+</ul>
+<script type="math/tex; mode=display">
+\lim_{n \rightarrow \infty} A_n = \bigcup_{n = 1}^{\infty} A_n</script><ul>
+<li>비증가의 경우</li>
+</ul>
+<script type="math/tex; mode=display">
+\lim_{n \rightarrow \infty} A_n = \bigcap_{n = 1}^{\infty} A_n</script><p>다음으로 다룰 개념은 Set을 정의역으로 삼고 실수를 공역으로 삼는 함수이다. 고등학생쯤 된다면 아직 익숙하지 않을 것이다. 자주 다루는 함수는 실수 또는 자연수가 정의역이고 공역이 실수 쯤 될 것이다.<br>하지만 일단 확률을 이해하는데 있어서 필수불가결인 부분이다. 지금은 받아들이도록 하자.</p>
+<p>종종 집합 함수는 합이나 적분으로 정의된다. 다음 (1), (2)는 각각 1,2 차원에서 집합 $A$에 대한 리만 적분을 의미한다. </p>
+<script type="math/tex; mode=display">
+\int_A f(x) dx
+\tag{1}</script><script type="math/tex; mode=display">
+\iint_A g(x, y) dxdy
+\tag{2}</script><p>이때 유의해야할 점이 함수 $f$, $g$에 대해서 A를 잘못 설정하게 되면 아예 위 적분이 존재하지 않는 상황이 발생한다는 것이다.</p>
+<p>또한, 다음 (3), (4)는 $x \in A$에 대한 $f(x)$의 총합 / $(x,y) \in B$에 대한 $g(x,y)$에 대한 총합을 의미한다.</p>
+<script type="math/tex; mode=display">
+\sum_A f(x)
+\tag{3}</script><script type="math/tex; mode=display">
+\sum_B g(x,y)
+\tag{4}</script><h2 id="Probability-Set-function"><a href="#Probability-Set-function" class="headerlink" title="Probability Set function"></a>Probability Set function</h2><p>이제부터 슬슬 내용이 고등화된다. 우선 어떤 실험이 주어졌을때, 가능한 모든 결과의 표본 공간을 $\mathcal{C}$라고 하자. 일단 그리고 다음과 같은 가정을 추가하겠다.</p>
+<blockquote>
+<p>모든 경우에 사건의 모임이 관심 있는 모든 사건을 포함할 정도로 크고, 여집합의 연산과 가산형 합집합의 연상에 대해 닫혀 있다고 가정한다. 그리고 이러한 사건의 집합을 $\mathcal{B}$라고 표현하자.</p>
+</blockquote>
+<p>전문적으로 이러한 사건의 집합을 $\mathcal{C}$의 부분 집합의 $\sigma$-field라고 한다. 이에 대해서는 추후에 다른 포스트 하나를 소요해서 설명할 예정이다. 진짜 완전 중요한 개념이다.</p>
+<p>이제 드디어 확률이 뭔지를 정의할 수 있는 밑밥을 다 깔았다. </p>
+<blockquote>
+<p>$\mathcal{C}$가 표본 공간이고 $\mathcal{B}$가 사건의 집합이라고 하자. 또한, $\mathcal{B}$상에서 정의된 실함수를 $P$라고 하자. $P$가 다음 3가지 조건을 만족하면 $P$를 <em>확률 집합 함수</em>라고 한다.</p>
+</blockquote>
+<ol>
+<li>$\forall A \in \mathcal{B}$, $P(A) \geq 0$</li>
+<li>$P(\mathcal{C}) = 1$</li>
+<li>만약, ${A_n}$이 $\mathcal{B}$안에서 사건열이고 모든 $m \neq n$에 대해서 $A_m \cap A_n = \empty$ 일때 다음이 성립한다.</li>
+</ol>
+<script type="math/tex; mode=display">
+P\left( \bigcup_{n = 1}^{\infty} A_n \right) = \sum_{n = 1}^{\infty} P(A_n)</script><p>조건 3번의 경우에는 원소들이 쌍으로 배반인 사건의 모임을 서로 배타적인 모임이라고 하며 이 모임의 합집합을 배반인 합집합이라고도 한다.<br>그리고 이러한 합집합이 표본공간이 되면 이 모임을 exhaustive라고 한다. </p>
+<p>드디어 확률이 무엇인지 제대로 정의했다. 위 조건을 만족시키는 집합 함수를 우리는 <em>확률</em>이라고 부른다. 아무거나 확률을 가져다 붙이는 것이 아니다.</p>
+<p>그리고 이러한 확률은 다음 정리를 만족한다.</p>
+<ol>
+<li>각 $A \in \mathcal{B}$에 대하여 $P(A) = 1 - P(A^{\complement})$이다. </li>
+<li>공집합의 확률은 0이다.</li>
+<li>A와 B가 $A \subset B$를 만족하는 사건이면 $P(A) \leq P(B)$이다. </li>
+<li>각 $A \in \mathcal{B}$에 대하여 $0 \leq P(A) \leq 1$이다.</li>
+<li>$A$와 $B$가 $\mathcal{C}$에 있는 사건이면 $P(A \cup B) = P(A) + P(B) - P(A \cap B)$이다.</li>
+</ol>
+<p>각 정리에 대한 증명은 책을 참고하자. 굳이 여기서 구구 절절 설명하지는 않겠다.</p>
+<p>그리고 여기서 확률 집합 함수의 중요한 정의중 하나인 등가능성 사례를 알아보도록 하겠다.</p>
+<blockquote>
+<p>$\mathcal{C}$가 유한한 표본 공간이라고 하자. 모든 $i = 1,2,…,m$에 대하여 $p_i = 1/m$이고 $\mathcal{C}$이 모든 부분 집합 $A$에 대하여 다음과 같이 정의하자</p>
+</blockquote>
+<script type="math/tex; mode=display">
+P(A) = \sum_{x_i \in A} \frac{1}{m} = \frac{\#(A)}{m}
+\tag{definition 3}</script><p>위 definition 3이 바로 등가능성 사례이다. 이는 매우 흥미로운 확률 모형이다. 주사위, 포커 뽑기 등등 여러 실 사용 예시가 있고 수학적으로 접근하기도 쉽다. 아무래도 그냥 세기만 잘 하면 되기 때문이다.<br>하지만 이런 것들을 “잘 세는” 것도 매우 중요한 일이다. 이에 대한 좋은 수학적 도구중 대표적으로 순열과 조합이 있다.</p>
+<ol>
+<li>순열 (Permutation)</li>
+</ol>
+<script type="math/tex; mode=display">
+P^n_k = n(n - 1)\dotsb(n - k + 1) = \frac{n!}{(n - k)!}</script><ol>
+<li>조합 (Combination)</li>
+</ol>
+<script type="math/tex; mode=display">
+\binom{n}{k} = \frac{n!}{k!(n - k)!}</script><p>위 2가지를 모르는 사람은 없을 것이라고 가정하고 넘어 가도록 하겠다.</p>
+<p>그리고 이 확률론을 사건열에도 적용하여 또 다른 정리를 끌어낼 수 있다.</p>
+<ol>
+<li>${C_n}$을 비감소 사건열이라고 하면 다음이 성립한다.</li>
+</ol>
+<script type="math/tex; mode=display">
+\lim_{n \rightarrow \infty} P(C_n) = P\left( \bigcup_{n = 1}^{\infty} C_n \right)</script><ol>
+<li>${C_n}$을 비증가 사건열이라고 하면 다음이 성립한다.</li>
+</ol>
+<script type="math/tex; mode=display">
+\lim_{n \rightarrow \infty} P(C_n) = P\left( \bigcap_{n = 1}^{\infty} C_n \right)</script><ol>
+<li>${C_n}$을 임의의 사건열이라고 하면 다음을 불의 부등식이라 부른다.</li>
+</ol>
+<script type="math/tex; mode=display">
+P\left( \bigcup_{n = 1}^{\infty} C_n \right) \leq \sum_{n = 1}^{\infty} P(C_n)</script><h2 id="Conditional-Probability-and-Independency"><a href="#Conditional-Probability-and-Independency" class="headerlink" title="Conditional Probability and Independency"></a>Conditional Probability and Independency</h2><p>어떤 확률 실험에서는 사건 $A$에만 집중해야하는 경우도 있다. 이렇게 새로운 표본공간 A를 가진 확률 집합함수를 정의하는 문제를 생각해보는 것이 바로 조건부 확률(Conditional Probability)이다. 조건부 확률은 사건 $A$의 가설에 대한 사건 $B$의 확률이 어떻게 정의되는가를 본다. 보통 이러한 확률은 ‘$A$가 주어졌을때(given) $B$의 조건부 확률’이라고 읽고 $P(B|A)$라고 표현한다. 이러한 조건부 확률은 다음과 같이 정의한다.</p>
+<script type="math/tex; mode=display">
+P(B|A) = \frac{P(A \cap B|A)}{P(A|A)} = \frac{P(A \cap B)}{P(A)} \left(\text{where} \space P(A) > 0  \right)
+\tag{definition 4}</script><p>그리고 위와 같은 정의로부터 우리는 다음과 같은 결과를 얻을 수 있다.</p>
+<ol>
+<li>$P(B | A) \geq 0$</li>
+<li>$P(A|A) = 1$</li>
+<li>$B<em>1,B_2,\dotsb$가 서로 배타적인 사건일 경우, $P\left(\bigcup</em>{n = 1}^{\infty} B<em>n | A \right) = \sum</em>{n = 1}^{\infty}P(B_n|A)$</li>
+</ol>
+<p>1,2번은 명백하다 그리고 3번에 대한 설명을 추가적으로 하자면 일련의 사건 $B_1,B_2,\dotsb$가 서로 배타적이라고 가정하면 다음이 성립하게 된다.</p>
+<script type="math/tex; mode=display">
+(B_n \cap A) \cap (B_m \cup A) = \empty \left( \text{where} \space n \neq m \right)</script><p>이를 가산형 합집합에 대한 분배법칙을 활용하면 다음과 같은 결과를 얻을 수 있다.</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+P\left( \bigcup_{n = 1}^{\infty} B_n \middle| A \right) &= \frac{P\left[ \bigcup_{n = 1}^{\infty} (B_n \cap A) \right]}{P(A)} \\
+&= \sum_{n = 1}^{\infty}\frac{P[B_n \cap A]}{P(A)} \\
+&= \sum_{n = 1}^{\infty} P[B_n | A]
+\end{align*}</script><p>물론, 당연히 여기서 $P(A) &gt; 0$이 성립해야한다.<br>그리고 조건부 확률의 정의로써 다음을 알 수 있다.</p>
+<script type="math/tex; mode=display">
+P(A \cap B) = P(A)P(B|A)</script><p>이 관계식을 확률의 곱셈 법칙이라고 한다. 이는 아주 단순하지만 유용하게 사용되고는 한다.<br>곱셈 법칙은 3개 이상의 사건으로도 확장될 수 있다. 이를 $k$개의 사건으로 확장하는 수학적 귀납법을 활용한 증명을 밑에 적어두도록 하겠다. 나중에 베이즈 정리 등을 이해할때 필수적이닌 꼭 숙지해 두도록 하자.</p>
+<ul>
+<li>$k$개의 사건에 대한 확률의 곱셈 법칙의 증명</li>
+</ul>
+<hr>
+<p>$P(A_i) &gt; 0, (i = 1,2,\dots,k)$인 $k$개의 배타적이고 전체를 이루는 사건들에 대해서 생각해 보자. 이러한 사건이 $\mathcal{C}$를 분할한다고 여겨도 된다. 이때, 위 확률의 분포가 균일할 필요는 없다. 그리고 $P(B) &gt; 0$인 또 다른 사건 $B$가 있다고 하자. 따라서 사건 $B$는 사건 $A_i, (i = 1,2,\dots,k)$중 단지 하나와 같이 발생한다. 즉, </p>
+<script type="math/tex; mode=display">
+\begin{align*}
+B &= B \cap \left( \bigcup_{n = 1}^{k} A_n \right) \\
+&= \bigcup^{k}_{n = 1}(B \cap A_n)
+\end{align*}</script><p>이 성립한다.</p>
+<p>이때, $B \cap A_i, (i = 1,2,\dots,k)$는 서로 배반 사건이므로 다음 또한 성립한다.</p>
+<script type="math/tex; mode=display">
+P(B) = \sum_{n = 1}^{k} P(B \cap A_n)</script><p>이때, $P(B \cap A_i) = P(A_i)P(B | A_i), (i = 1,2,\dots,k)$이므로, 다음이 성립한다.</p>
+<script type="math/tex; mode=display">
+P(B) = \sum_{n = 1}^{k} P(A_n)P(B|A_n)</script><p>이 결과를 총 확률의 법칙이라고 하고 다음의 <strong>매우아주엄청슈퍼</strong>중요한 정리로 이어진다.</p>
+<hr>
+<h3 id="Bayes-Theorem"><a href="#Bayes-Theorem" class="headerlink" title="Bayes Theorem"></a>Bayes Theorem</h3><p>이 파트는 따로 포스트 하나를 떼서 설명해도 모자랄 정도로 매우 중요한 정리이다. 하지만 지금은 가볍게 짚고 넘어가기 위해서 간단한 설명만을 하겠다.</p>
+<ul>
+<li>Bayes Theorem</li>
+</ul>
+<hr>
+<p>$i = 1,2,\dots,k$에서 $P(A_i) &gt; 0$인 사건들이 있다고 하자. 그리고 이 사건들이 표본공간 $\mathcal{C}$를 분할한다고 가정했을때 $B$가 어떤 사건이라면 다음을 얻을 수 있다. </p>
+<script type="math/tex; mode=display">
+P(A_j | B) = \frac{P(A_j)P(B|A_j)}{\sum_{i = 1}^kP(A_i)P(B|A_i)}
+\tag{defintion 5}</script><hr>
+<p>이에 대한 증명은 독자들에게 맡긴다. 워낙 쉽기도 하고 위의 총확률의 법칙을 활용하면 되기 때문이다. </p>
+<p>여기서 중요한 용어를 조금 정리하고 넘어가고자 한다. 으례 다음과 같이 확률에 이름을 붙이는데, 여러 분야에서 활용되니 알고 넘어가자.</p>
+<ul>
+<li>위에서 $P(A_i)$를 사전 확률(prior probability)라고 부른다.</li>
+<li>위에서 $P(A_i|B)$를 사후 확률(posterior probability)라고 부른다.</li>
+</ul>
+<p>이에 대한 유용성, 응용 분야는 차례차례 알아가도록 하자. 지금은 일단 알아만 두기를 권장한다.</p>
+<h3 id="Independency"><a href="#Independency" class="headerlink" title="Independency"></a>Independency</h3><p>어떤 경우에는 사건 $A$에 사건 $B$가 영향을 받지 않는 경우가 있다. 이러한 경우에는 사건 $A$와 $B$는 서로 독립적이다. 라고 부른다.</p>
+<script type="math/tex; mode=display">
+P(B|A) = P(B), (\text{where} \space P(A) > 0)</script><p>이에 곱셈 법칙을 적용하면 다음과 같은 결과를 얻는다. </p>
+<script type="math/tex; mode=display">
+P(A \cap B) = P(A)P(B)</script><p>따라서 위의 위의 결과를 만족시키면 사건 $A$, $B$를 서로 독립이라고 불러도 된다.<br>이를 $k$개의 사건에도 적용할 수 있다. 이 부분에 대한 증명은 독자들에게 맡기도록 하겠다.</p>
+<h2 id="Random-Variables"><a href="#Random-Variables" class="headerlink" title="Random Variables"></a>Random Variables</h2><p>이제 독자들은 표본공간 $\mathcal{C}$의 원소가 수가 아닐때는 $\mathcal{C}$를 기술하기가 그렇게 쉽지 않다는 것을 알 수 있을 것이다. 이를 실수로 대응시킬 수 있는 방법이 바로 확률 변수를 사용하는 것이다. </p>
+<blockquote>
+<p>표본공간 $\mathcal{C}$에서 확률 실험이 주어졌다면 각 원소 $c \in \mathcal{C}$에 오직 하나의 실수 $X(c) = x$를 대응시키는 함수 $X$를 확률 변수, random variable이라고 한다. $X$의 공간/범위는 실수의 집합 $\mathcal{D} = { x: x = X(c), c \in \mathcal{C} }$이다.</p>
+</blockquote>
+<p>여기서 표현한 $\mathcal{D}$가 가산형 집합이냐 실수의 구간이냐에 따라서 확률 변수가 이산형(discrete)이냐 연속형(continuous)이냐가 결정이 된다.</p>
+<p>자, 이제부터 중요한 내용인 Probability Mass Function(PMF), Probability Density Function(PDF), Cumulative distribuiton function(CDF)가 등장하게 된다.</p>
+<p>우선, $X$가 유한공간 $\mathcal{D} = {d_1, \dots, d_m}$에서 정의된 경우를 생각해 보자. 이때, 표본공간 $\mathcal{D}$에서 다음과 같은 함수 $p_X(d_i)$를 정의해보자.</p>
+<script type="math/tex; mode=display">
+p_X(d_i) = P[\{ c: X(c) = d_i \}], \space i = 1,\dots,m 
+\tag{defintion 6}</script><p>이제 여기서 표본공간 $\mathcal{D}$의 사건 $D$의 확률을 다음과 같이 정의할 수 있다.</p>
+<script type="math/tex; mode=display">
+P_X(D) = \sum_{d_i \in D} p_X(d_i), \space D \subset \mathcal{D}</script><p>이러한 함수 $p_X(d_i)$를 우리는 확률 질량 함수(PMF)라고 한다.</p>
+<p>그렇다면, $X$가 연속형일 경우는 어떨까? 표본 공간이 연속형인 경우에는 단 한 지점에서의 확률을 논하는 것이 의미가 없다. 왜냐? 확률적으로 0.00001도 오차 없이 딱 그 지점에서 사건이 발생할 확률은 0에 수렴하기 때문이다. (직관적으로 받아들이자.)<br>따라서 우리는 연속형 확률 변수에서는 구간을 지정해서 확률을 구해야 한다.  </p>
+<p>따라서 우리는 구간 $(a,b) \in \mathcal{D}$에 대해 $X$의 유도된 확률 분포 $P_X$가 정의될 수 잇는 함수를 지정할 수 있다. </p>
+<script type="math/tex; mode=display">
+\begin{align*}
+P_X[(a,b)] &= P[\{ c \in \mathcal{C}: a < X(c) < b \}] \\
+&= \int_a^bf_X(x)dx
+\end{align*}
+\tag{definition 7}</script><p>이러한 함수 $f_X(x)$는 다음과 같은 조건을 만족해야 한다.</p>
+<ol>
+<li>$f_X(x) \geq 0$</li>
+<li>$\int_{\mathcal{D}} f_X(x)dx = 1$</li>
+</ol>
+<p>이러한 함수 $f_X(x)$를 확률 밀도 함수(PDF)라고 한다.</p>
+<p>그리고 이산이건, 연속이건 상관 없이 정의되는 함수가 있다. 바로 누적 분포 함수(CDF)이다.<br>이는 다음과 같이 정의된다.</p>
+<script type="math/tex; mode=display">
+F_X(x) = P_X((-\infty, x]) = P(\{ x \in \mathcal{C}: X(c) \leq x \})
+\tag{definition 8}</script><p>여기서 위 정의 8의 우항은 $P(X \leq x)$라고 간략하게 표현되기도 한다.</p>
+<p>이러한 CDF의 성질은 다음과 같이 정리할 수 있다.</p>
+<ul>
+<li>누적 분포 함수 $F(x)$를 가진 확률 변수가 $X$일때, 다음이 성립한다.<ol>
+<li>$\forall (a,b) \in \mathbb{R}^2$, $F(a) \leq F(b), a &lt; b$ (비 감소 함수)</li>
+<li>$\lim_{x \rightarrow -\infty} F(x) = 0$</li>
+<li>$\lim_{x \rightarrow \infty} F(x) = 1$</li>
+<li>$\lim_{x \downarrow x_0} F(x) = F(x_0)$, $F(x)$는 우 연속 함수</li>
+</ol>
+</li>
+<li>CDF $F_X$를 가진 확률 변수를 $X$라고 하면 $a &lt; b$에서 $P[a &lt; X \leq b] = F_X(b) - F_X(a)$이다.</li>
+<li>모든 확률 변수에서 $\forall x \in \mathbb{R}$에 대해 $P[X = x] = F<em>X(x) - F_X(x-)$이다. ($F_X(x-) = \lim</em>{z \uparrow x } F_X(z)$)</li>
+</ul>
+<p>위 식들에 대한 증명은 나중에 Chapter 1 Appendix의 다른 포스트에서 다루도록 하겠다. </p>
+<h2 id="Discrete-Random-Variables"><a href="#Discrete-Random-Variables" class="headerlink" title="Discrete Random Variables"></a>Discrete Random Variables</h2><p>이산형 확률 변수는 다음과 같이 정의된다.</p>
+<blockquote>
+<p>확률 변수의 공간이 유한이거나 가산형일 경우인 경우에 이러한 확률 변수를 이산형 확률 변수라고 한다.</p>
+<p>공간 $\mathcal{D}$를 가진 이산형 확률 변수를 $X$라고 하자. $X$의 확률 질량 함수는 다음과 같이 정의된다.</p>
+</blockquote>
+<script type="math/tex; mode=display">
+p_X(x) = P[X = x], \space x \in \mathcal{D}
+\tag{definition 9}</script><p>이때, PMF는 다음 2가지 성질을 만족해야한다.</p>
+<ol>
+<li>$0 \leq p_X(x) \leq 1, x \in \mathcal{D}$</li>
+<li>$\sum_{x \in \mathcal{D}}p_X(x) = 1$</li>
+</ol>
+<p>만약, 이산형 집합 $\mathcal{D}$에서 위 2가지 조건을 만족한자면 이 함수는 한 확률 변수의 분포함수를 유일하게 결정한다는 것을 증명할 수 있다. 하지만 여기서는 다루지 않을 것이다. </p>
+<h3 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h3><p>통계를 다루면서 자주 부딧히는 문제중에 하나이다. 확률 변수 $X$가 있으며 그것의 분포를 알고 있을때, 우리는 $X$로 표현되는 확률 변수 $Y = g(X)$의 분포를 알고 싶은 것이다. 이때, $X$가 이산형이라면 어떻게 표현할 수 있는지 그것을 알아보고자 한다.</p>
+<p>$X$가 공간 $\mathcal{D}_X$를 가진 이산형 확률 변수라고 하자. 그렇다면 $Y$는 공간 $\mathcal{D}_Y = { g(x): x \in \mathcal{D}_X }$일 것이다.<br>여기서 우리는 2가지 경우를 생각해볼 수 있다. </p>
+<ol>
+<li><p>$g$가 1 대 1 함수이다.</p>
+<p> 이런 경우에는 문제가 심플해진다. $Y$의 PMF는 다음과 같이 얻을 수 있다.</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+\begin{align*}
+P_Y(y) &= P[Y = y] \\ 
+&= P[g(X) = y] \\
+&= P[X = g^{-1}(y)] \\
+&= p_X(g^{-1}(y))
+\end{align*}</script><ol>
+<li>1이 어림도 없는 경우) 이러한 경우에는 함수의 구간별로 나눠서 각각 1대 1인 상황을 만든 후에 변환을 진행하면 된다. (귀찮은 경우이다.)</li>
+</ol>
+<h2 id="Continuous-Random-Variables"><a href="#Continuous-Random-Variables" class="headerlink" title="Continuous Random Variables"></a>Continuous Random Variables</h2><p>앞선 절에서는 이산형 확률 변수에 대해서 알아 보았으니, 이번에는 연속형 확률 변수에 대해서 알아보도록 하겠다. </p>
+<blockquote>
+<p>확률 변수 $X$의 누적 분포 함수 $F_X(x)$가 $\forall x \in \mathbb{R}$에 대해서 연속이라면 확률 변수 $X$를 연속현 확률 변수라고 부른다.</p>
+</blockquote>
+<p>주의해야할 점이 위 CDF의 정리중에서 3번째이다. 연속형에서는 질량점이 없으므로 어느 점을 꼽든지 간에 $P[X = x] = 0$이다. 대부분 연속형 확률 변수는 절대 연속이다. 즉, 어떤 함수 $f_X(t)$에 대하여</p>
+<script type="math/tex; mode=display">
+F_X(x) = \int_{-\infty}^{x} f_X(t)dt</script><p>이다. 이러한 $f_X(t)$를 우리는 PDF, 확률 밀도 함수라고 한다. 이러한 확률 밀도 함수는 다음 2가지 조건을 만족해야한다.</p>
+<ol>
+<li>$f_X(x) \geq 0$</li>
+<li>$\int^{\infty}_{-\infty}f_X(x)dx = 1$</li>
+</ol>
+<p>여기서 중요한 점은 한 함수가 위의 2개의 성질을 만족한다면 그것은 한 연속형 확률 변수의 PDF라는 것이다. </p>
+<h3 id="Quantile"><a href="#Quantile" class="headerlink" title="Quantile"></a>Quantile</h3><p>여기서 등장하는 개념이 분위수이다. </p>
+<blockquote>
+<p>$0 &lt; p &lt; 1$이라고 하자. 확률 변수 $X$의 분포에서 $p$차 분위수는 $P(X &lt; \xi_p) \leq p$, $P(X \leq \xi_p) \geq p$가 되는 $\xi_p$ 값이다. 이를 $X$의 $100p$번째 백분위수라고 한다.</p>
+</blockquote>
+<h3 id="Transformation-1"><a href="#Transformation-1" class="headerlink" title="Transformation"></a>Transformation</h3><p>그렇다면 연속형 확률 변수에서의 변환은 어떻게 이루어질까? 다음에 그 방법을 설명해두었다.<br>우리는 CDF를 활용하면 쉽게 그것을 행할 수 있다.</p>
+<p>$X$는 pdf $f_X(x)$를 가진 연속형 확률 변수이고 $Y = g(X)$라고 하자. 여기서 $g(x)$는 1대 1 대응 함수이며 미분 가능한 함수이다. $g$의 역함수를 $x = g^{-1}(y)$라고 표현하며 $\frac{dx}{dy} = \frac{d[g^{-1}(y)]}{dy}$라면 $Y$의 pdf는 다음과 같다.</p>
+<script type="math/tex; mode=display">
+f_Y(y) = f_X(g^{-1}(y))\mid\frac{dx}{dy}\mid</script><p>여기서 $\frac{dx}{dy} = \frac{d[g^{-1}(y)]}{dy}$를 변환의 야코비안(Jacobian, $J$로 표기한다.)이라고 한다.</p>
+<h2 id="Expectation-of-Random-Variable"><a href="#Expectation-of-Random-Variable" class="headerlink" title="Expectation of Random Variable"></a>Expectation of Random Variable</h2><p>이 파트에서는 기댓값 연산을 소개한다. 다음 정의를 보자.</p>
+<blockquote>
+<p>만약 $X$가 pdf $f(x)$와 다음이 성립하면 연속형 확률 변수이면</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}|x|f(x)dx < \infty</script><blockquote>
+<p>$X$의 기댓값은 다음과 같다.</p>
+</blockquote>
+<script type="math/tex; mode=display">
+E(X) = \int_{-\infty}^{\infty} xf(x)dx
+\tag{definition 10}</script><blockquote>
+<p>만약 x가 이산형 확률 변수이면 다음이 성립할때</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\sum_{x} |x|p(x) < \infty</script><blockquote>
+<p>$X$의 기댓값은 다음과 같다.</p>
+</blockquote>
+<script type="math/tex; mode=display">
+E(X) = \sum_{-\infty}^{\infty} xp(x)
+\tag{definition 10}</script><p>여기서 $E(X)$는 수학적 기댓값(mathematical expectation), $X$의 기댓값(expected value), $X$의 평균 (mean)이라고들 부른다. 일반적으로 $\mu$라고 표기한다.<br>이러한 평균은 다음 성질들을 가진다.</p>
+<ol>
+<li><p>$X$가 확률 변수이고 어떤 함수 $g$에 대하여 $Y = g(X)$라고 하자.  </p>
+<p> a. $X$가 pdf $f<em>X$를 가진 연속형 변수일때, $\int</em>{-\infty}^{\infty}|g(x)|f_X(x)dx &lt; \infty$이면 $Y$의 기대값은 존재하며 다음과 같다.   </p>
+<script type="math/tex; mode=display">
+ E(Y) = \int_{-\infty}^{\infty}g(x)f_X(x)dx</script><p> b. $X$가 pmf $p<em>X$를 가진 이산형 변수이고 $X$의 받침이 $S_X$라고 하자. 만약 $\sum</em>{x \in S_X}|g(x)|p_X(x) &lt; \infty$이면 $Y$의 기댓값이 존재하며 이 값은 다음과 같다.</p>
+<script type="math/tex; mode=display">
+ E(Y) = \sum_{x \in S_X}g(x)p_X(x)</script></li>
+<li><p>$g_1(X)$, $g_2(X)$가 $X$의 함수이고 $g_1(X)$, $g_2(X)$의 기댓값이 존재한다고 가정하자. 그렇다면 상수 $k_1, k_2$에 대해서 $k_1g_1(X) + k_2g_2(X)$의 기댓값이 존재하며 이 값은 다음과 같다.</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+E[k_1g_1(X) + k_2g_2(X)] = k_1E[g_1(x)] + k_2E[g_2(x)]</script><h2 id="Special-Expectation"><a href="#Special-Expectation" class="headerlink" title="Special Expectation"></a>Special Expectation</h2><p>몇몇 특수한 함수의 기댓값은 확률 변수의 특수한 성질들을 끌어내어 그 특성을 파악하는데 도움을 준다. 이러한 특수한 기댓값들의 종류를 이번 장에서는 다뤄볼 것이다.</p>
+<ol>
+<li><p>Variance</p>
+<p> 이걸 굳이 설명해야하나 싶지만, 일단 정의만 적어 보겠다.</p>
+<script type="math/tex; mode=display">
+ \sigma^2 = Var(X) = E[(X - \mu)^2]</script></li>
+<li><p>Moment Generating Function (MGF)</p>
+<p> 어떤 $h &gt; 0$에 대하여 $-h &lt; t &lt; h$일때, $e^{tX}$의 기댓값이 존재하는 확률 변수를 $X$라고 하자. $X$의 적률 생성 함수는 $M(t) = E[e^{tX}]$로 정의된다.</p>
+<p> 이러한 적률 생성 함수는 특수한 성질을 가지는데, 그것은 다음과 같다.</p>
+<p> 0을 초함하는 개구간에 존재하는 적률 생성 함수 $M_X$와 $M_Y$를 가진 확률 변수를 각각 $X,Y$라고 하자. 임의의 $h &gt; 0$에 대해 $-h &lt; t &lt; h$일때, $M_X(t) = M_Y(t)$인 경우에 한하여 모든 $z \in \mathbb{R}$에 대하여 $F_X(z) = F_Y(z)$이다.</p>
+<p> 조금 많이 중요한 성질로는 이러한 MGF를 n차 미분한 결과에 0을 대입한 것을 n차 적률(n-th moment) 이라고 부르고 이는 $E(X^n)$과 같다.</p>
+</li>
+<li><p>Characteristic Function</p>
+<p> 이는 적률 함수와 모양새가 비슷한데, 허수 단위를 추가한 것이다.<br> $\varphi(t) = E[e^{itX}]$ 로 정의되며 $\varphi(t) = M(it)$가 성립한다.</p>
+</li>
+</ol>
+<p><em>적률 생성 함수와 특성함수는 각각 PDF의 라플라스 변환/푸리에 변환이다.</em> 따라서 각 함수들은 PDF 별로 <strong>유일</strong>하다.</p>
+<h2 id="Important-Inequality"><a href="#Important-Inequality" class="headerlink" title="Important Inequality"></a>Important Inequality</h2><p>여기서는 알아두면 아주 유용한 부등식을 소개할 것이다. 증명은 나중에 Appendix 포스트에서 몰아서 할 것이니 유의하자. 여기서는 소개만 할 것이다.</p>
+<ol>
+<li>$X$가 확률 변수이고 $m$은 양의 정수이며 $E[X^m]$이 존재한다고 가정하자. 만약 $k$가 양의 정수이고 $k \leq m$이면 $E[X^k]$가 존재한다.</li>
+<li>[마르코프 부등식]확률 변수 $X$의 음이 아닌 함수를 $u(X)$라고 하자. $E[u(X)]$가 존재하면 모든 양수 $c$에 대하여 다음이 성립한다.</li>
+</ol>
+<script type="math/tex; mode=display">
+P[u(X) \geq c] \leq \frac{E[u(X)]}{c}</script><ol>
+<li>[체비셰프 부등식]확률 변수 $X$가 유한한 분산을 가진다고 하자. 즉, 1번 부등식에 의해 평균이 존재한다고 하면, $k &gt; 0$에 대해서 다음이 성립한다.</li>
+</ol>
+<script type="math/tex; mode=display">
+\begin{align*}
+P(|X - \mu| \geq k\sigma) \leq \frac{1}{k^2} \\
+P(|X - \mu| < k\sigma) \geq 1 - \frac{1}{k^2}
+\end{align*}</script><ol>
+<li>[옌센의 부등식] 만약, $\phi$가 개구간 $I$에서 볼록이면 $X$가 받침이 $I$안에 있고 유한 기댓값을 가진 확률 변수라면 다음이 성립한다.</li>
+</ol>
+<script type="math/tex; mode=display">
+\phi[E(X)] \leq E[\phi(X)]</script><p>만약, $\phi$가 순 볼록이면 부등식 $X$가 상수 확률변수가 아닌 한 엄격하다.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -2148,184 +2576,10 @@ X_T^*, m^* = \argmax_{X_t, m} \ln p(X_T,m |Z_T,U_t)
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kimh060612.github.io/2022/03/05/Transformer-C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Michael Kim">
-      <meta itemprop="description" content="Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Michael's Study Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/05/Transformer-C/" class="post-title-link" itemprop="url">Transformer 강의 내용 part.C</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-05 19:28:31" itemprop="dateCreated datePublished" datetime="2022-03-05T19:28:31+09:00">2022-03-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-30 00:00:32" itemprop="dateModified" datetime="2022-05-30T00:00:32+09:00">2022-05-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2022/03/05/Transformer-C/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/05/Transformer-C/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><em>본 포스트는 해당 링크의 <a target="_blank" rel="noopener" href="https://wikidocs.net/22893">블로그</a>와 논문 “Attention is all you need”를 참조하여 작성되었음을 알립니다.</em></p>
-<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><ol>
-<li><del>Attention!</del><ul>
-<li><del>Seq2Seq</del></li>
-<li><del>Attention in Seq2Seq</del></li>
-</ul>
-</li>
-<li><del>Transformer Encoder</del><ul>
-<li><del>Attention in Transformer</del></li>
-<li><del>Multi-Head Attention</del></li>
-<li><del>Masking</del></li>
-<li><del>Feed Forward</del></li>
-</ul>
-</li>
-<li><del>Transformer Decoder</del></li>
-<li><del>Positional Encoding</del></li>
-<li>Partice<ul>
-<li>Seq2Seq Attention</li>
-<li>Transformer</li>
-</ul>
-</li>
-</ol>
-<p><br></p>
-<h3 id="Partice"><a href="#Partice" class="headerlink" title="Partice"></a>Partice</h3><hr>
-<p>이 파트에서는 지난 시간부터 쭉 다뤄온 Attention과 Transformer를 구현해 보는 시간을 가질 것이다. 본격적으로 Model Subclassing API를 제대로 활용하는 시간이 될 것이다.</p>
-<h4 id="Seq2Seq-Attention"><a href="#Seq2Seq-Attention" class="headerlink" title="Seq2Seq Attention"></a>Seq2Seq Attention</h4><p>Transformer 구조를 보기 전에 Attention을 Seq2Seq 모델에 적용시켜 보도록 하겠다. 먼저 소스코드부터 보고 가자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Attention</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Attention, self).__init__()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, q, k, v, mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># q: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, seq_len, d_model)</span></span><br><span class="line"></span><br><span class="line">        matmul_qk = tf.matmul(q, k, transpose_b=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># qk^T : (batch_size, seq_len, seq_len)</span></span><br><span class="line"></span><br><span class="line">        dk = tf.cast(tf.shape(k)[-<span class="number">1</span>], tf.float32)</span><br><span class="line">        scaled_attention_logits = matmul_qk / tf.math.sqrt(dk)</span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            scaled_attention_logits += (mask * -<span class="number">1e9</span>)</span><br><span class="line">        </span><br><span class="line">        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-<span class="number">1</span>)</span><br><span class="line">        output = tf.matmul(attention_weights, v)</span><br><span class="line">        <span class="comment"># output: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="keyword">return</span> output, attention_weights</span><br></pre></td></tr></table></figure>
-<p>우선 우리가 사용할 Attention 구조이다. 지난 Transformer part.A에서 정의한 연산(masking 포함)을 고대로 구현한 것이다.<br>이를 어떻게 Seq2Seq 모델에 적용하는지는 밑의 그림과 소스코드를 보자.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/Attention.png" width="100%"></p>
-
-<p>위 그림에 따르면 일단 Seq2Seq는 Encoder와 Decoder가 각기 다른 모델로 있다. 그리고 Encoder에서 나온 모든 time step의 출력과 Decoder의 출력을 같이 사용해서 연산을 해야할 필요가 있다.</p>
-<p>필자는 일단 Decoder에 Encoder의 모든 Time step의 출력을 넣는 형식으로 구현을 하였다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, WORDS_NUM, emb_dim, hidden_unit, batch_size, *args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(*args, **kwargs)</span><br><span class="line">        self.batch_size = batch_size</span><br><span class="line">        self.hidden_unit = hidden_unit</span><br><span class="line">        self.embedding = keras.layers.Embedding(WORDS_NUM, emb_dim)</span><br><span class="line">        self.LSTM = keras.layers.LSTM(hidden_unit, return_state=<span class="literal">True</span>, return_sequences=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs, enc_hidden = <span class="literal">None</span></span>):</span><br><span class="line">        x = self.embedding(inputs)</span><br><span class="line">        y, h, _ = self.LSTM(x, initial_state=enc_hidden)</span><br><span class="line">        <span class="keyword">return</span> y, h</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decoder</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, WORDS_NUM, emb_dim, hidden_unit, *args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(*args, **kwargs)</span><br><span class="line">        self.embedding = keras.layers.Embedding(WORDS_NUM, emb_dim)</span><br><span class="line">        self.lstm = tf.keras.layers.LSTM(hidden_unit, return_sequences=<span class="literal">True</span>, return_state=<span class="literal">True</span>)</span><br><span class="line">        self.attention = Attention()</span><br><span class="line">        self.dense = tf.keras.layers.Dense(WORDS_NUM, activation=<span class="string">&#x27;softmax&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, hidden, mask=<span class="literal">None</span></span>):</span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        _, h, c = self.lstm(x)</span><br><span class="line">        context_vec, attention_weight = self.attention(h, hidden, hidden, mask=mask)</span><br><span class="line">        </span><br><span class="line">        x_ = tf.concat([context_vec, c], axis=-<span class="number">1</span>)</span><br><span class="line">        out = self.dense(x_)</span><br><span class="line">        <span class="keyword">return</span> out, h, attention_weight</span><br></pre></td></tr></table></figure>
-<p>소스코드를 보기 전에 Attention의 $Q$, $K$, $V$의 정의를 먼저 상기하고 가자.</p>
-<p>$Q$ : 특정 시점의 디코더 셀에서의 은닉 상태<br>$K$ : 모든 시점의 인코더 셀의 은닉 상태들<br>$V$ : 모든 시점의 인코더 셀의 은닉 상태들  </p>
-<p>Encoder에서는 Decoder에서 활용하기 위해서 2개의 출력을 내놓는다. 본인의 출력값과 hidden state의 값이다.</p>
-<p>Decoder에서는 Encoder에서의 Hidden state를 입력으로 받아서 자신의 hidden state와 같이 attention! 을 진행한다.</p>
-<p>이렇게 만들어진 vector와 마지막 출력 값을 concatenation한 값을 dense에 넣어서 최종적인 출력을 내 놓는다.</p>
-<p>이의 training loop를 보면 더 이해가 잘 될 것이다. </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tf.function</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">inp, targ, enc_hidden</span>):</span><br><span class="line">    loss = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        _, enc_hidden = encoder(inp, enc_hidden)</span><br><span class="line">        dec_hidden = enc_hidden</span><br><span class="line">        dec_input = tf.expand_dims([targ_lang.word_index[<span class="string">&#x27;&lt;start&gt;&#x27;</span>]] * BATCH_SIZE, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, targ.shape[<span class="number">1</span>]):</span><br><span class="line">            predictions, dec_hidden, _ = decoder(dec_input, dec_hidden)</span><br><span class="line">            loss += loss_function(targ[:, t], predictions)</span><br><span class="line">            dec_input = tf.expand_dims(targ[:, t], <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        batch_loss = (loss / <span class="built_in">int</span>(targ.shape[<span class="number">1</span>]))</span><br><span class="line">        </span><br><span class="line">        variables = encoder.trainable_variables + decoder.trainable_variables</span><br><span class="line">        gradients = tape.gradient(loss, variables)</span><br><span class="line">        optimizer.apply_gradients(<span class="built_in">zip</span>(gradients, variables))</span><br><span class="line">        <span class="keyword">return</span> batch_loss</span><br></pre></td></tr></table></figure>
-<h4 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h4><p>이제 대망의 Transformer이다. 먼저 Transformer를 구현하기 위해서 어떤 Component들이 필요했는지 알아보자.</p>
-<ol>
-<li>Multi-head Attention</li>
-<li>Positional Encoding</li>
-<li>Encoder Blocks</li>
-<li>Decoder Blocks</li>
-</ol>
-<p>우리는 이 4가지 Component들을 각각 순차적으로 구현하고 이를 통해서 최종 모델을 구현할 것이다.</p>
-<p><em>file: model/layer.py</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MultiHeadAttention</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_head</span>):</span><br><span class="line">        <span class="built_in">super</span>(MultiHeadAttention, self).__init__()        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> d_model % num_head  == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;Invalid head and d_model!&quot;</span>)</span><br><span class="line">        self.d_k = d_model // num_head</span><br><span class="line">        self.num_head = num_head</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        </span><br><span class="line">        self.Wq = keras.layers.Dense(self.d_model)</span><br><span class="line">        self.Wk = keras.layers.Dense(self.d_model)</span><br><span class="line">        self.Wv = keras.layers.Dense(self.d_model)</span><br><span class="line">        </span><br><span class="line">        self.dense = keras.layers.Dense(self.d_model, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">split_head</span>(<span class="params">self, batch_size, x</span>):</span><br><span class="line">        x = tf.reshape(x, (batch_size, -<span class="number">1</span>, self.num_head, self.d_k))</span><br><span class="line">        <span class="keyword">return</span> tf.transpose(x, perm=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, q, k, v, mask = <span class="literal">None</span></span>):</span><br><span class="line">        batch_size = q.shape[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        q, k, v = self.Wq(q), self.Wk(k), self.Wv(v)</span><br><span class="line">        <span class="comment"># q: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        q, k, v = self.split_head(batch_size, q), self.split_head(batch_size, k), self.split_head(batch_size, v)</span><br><span class="line">        <span class="comment"># q: (batch_size, num_head, seq_len, d_k)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, num_head, seq_len, d_k)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, num_head, seq_len, d_v)</span></span><br><span class="line">        </span><br><span class="line">        qkT = tf.matmul(q, k, transpose_b=<span class="literal">True</span>) <span class="comment"># (batch_size, num_head, seq_len, seq_len)</span></span><br><span class="line">        d_k = tf.cast(self.d_k, dtype=tf.float32)</span><br><span class="line">        scaled_qkT = qkT / tf.math.sqrt(d_k)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> mask == <span class="literal">None</span>:</span><br><span class="line">            scaled_qkT += (mask * -<span class="number">1e9</span>)</span><br><span class="line">        </span><br><span class="line">        attention_dist = tf.nn.softmax(scaled_qkT, axis=-<span class="number">1</span>)</span><br><span class="line">        attention = tf.matmul(attention_dist, v) <span class="comment"># (batch_size, num_head, seq_len, d_k)</span></span><br><span class="line">        </span><br><span class="line">        attention = tf.transpose(attention, perm=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>]) <span class="comment"># (batch_size, seq_len, num_head, d_k)</span></span><br><span class="line">        concat_attention = tf.reshape(attention, (batch_size, -<span class="number">1</span>, self.d_model)) <span class="comment"># (batch_size, seq_len, d_model)</span></span><br><span class="line">        output = self.dense(concat_attention)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
-<p>각 연산 뒤에 차원을 적어 두었으니 이해하기는 어렵지 않을 것이다. 구체적인 정의가 떠오르지 않을 독자들을 위해서 Multi-Head Attention의 수식을 적어두고 가겠다.</p>
-<script type="math/tex; mode=display">
-\text{Attention}(Q, K, V) = \text{Softmax}(\frac{Q_iK_i^T}{\sqrt{d_k}})V_i
-\tag{definition 3}</script><script type="math/tex; mode=display">
-M_{out} = \text{Concat}(O_1, O_2, ..., O_{H_n}) W^O
-\tag{equation 1}</script><p>위 수식을 고대~로 구현한 것 밖에 되지 않는다.</p>
-<p>그리고 positional Encoding은 다음과 같이 구현했다.</p>
-<p><em>file: model/layer.py</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_angles</span>(<span class="params">pos, i, d_model</span>):</span><br><span class="line">    angle_rates = <span class="number">1</span> / np.power(<span class="number">10000</span>, (<span class="number">2</span> * (i//<span class="number">2</span>)) / np.float32(d_model))</span><br><span class="line">    <span class="keyword">return</span> pos * angle_rates</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">positional_encoding</span>(<span class="params">position, d_model</span>):</span><br><span class="line">    angle_rads = get_angles(np.arange(position)[:, np.newaxis], np.arange(d_model)[np.newaxis, :], d_model)</span><br><span class="line"></span><br><span class="line">    angle_rads[:, <span class="number">0</span>::<span class="number">2</span>] = np.sin(angle_rads[:, <span class="number">0</span>::<span class="number">2</span>])</span><br><span class="line">    angle_rads[:, <span class="number">1</span>::<span class="number">2</span>] = np.cos(angle_rads[:, <span class="number">1</span>::<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">    pos_encoding = angle_rads[np.newaxis, ...]</span><br><span class="line">    <span class="keyword">return</span> tf.cast(pos_encoding, dtype=tf.float32)</span><br></pre></td></tr></table></figure>
-<p>이것 또한 정의를 고대로 구현한 것이다. <del>(참 쉽죠?)</del></p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    PE_{(pos, 2i)} = \sin(pos/10000^{2i/d_{model}}) \\
-    PE_{(pos, 2i + 1)} = \cos(pos/10000^{2i/d_{model}})
-\end{aligned}</script><p>이제 Encoder와 Decoder Block을 구현할 차례이다. 귀찮으니 한번에 소스를 적어 두도록 하겠다.</p>
-<p><em>file: model/layer.py</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(Encoder, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_head = num_head</span><br><span class="line">        </span><br><span class="line">        self.MultiHeadAttention = MultiHeadAttention(d_model=d_model, num_head=num_head)</span><br><span class="line">        </span><br><span class="line">        self.dense_1 = keras.layers.Dense(d_ff, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        self.dense_2 = keras.layers.Dense(d_model, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        self.layernorm1 = keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm2 = keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line"></span><br><span class="line">        self.dropout1 = keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        self.dropout2 = keras.layers.Dropout(drop_out_prob)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, training=<span class="literal">True</span>, mask=<span class="literal">None</span></span>):</span><br><span class="line">        </span><br><span class="line">        out_atten = self.MultiHeadAttention(x, x, x, mask)</span><br><span class="line">        out_atten = self.dropout1(out_atten, training=training)</span><br><span class="line">        x = self.layernorm1(out_atten + x)</span><br><span class="line">        </span><br><span class="line">        out_dense = self.dense_1(x)</span><br><span class="line">        out_dense = self.dense_2(out_dense)</span><br><span class="line">        out_dense = self.dropout2(out_dense, training=training)</span><br><span class="line">        x = self.layernorm2(out_dense + x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decoder</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(Decoder, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_head = num_head</span><br><span class="line">        self.MultiHeadAttention1 = MultiHeadAttention(d_model, num_head)</span><br><span class="line">        self.MultiHeadAttention2 = MultiHeadAttention(d_model, num_head)</span><br><span class="line">        </span><br><span class="line">        self.dense_1 = keras.layers.Dense(d_ff, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        self.dense_2 = keras.layers.Dense(d_model, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        self.layernorm1 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm2 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm3 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.dropout1 = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        self.dropout2 = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        self.dropout3 = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, enc_output, training, look_ahead_mask, padding_mask</span>):</span><br><span class="line">        </span><br><span class="line">        out_atten1 = self.MultiHeadAttention1(x, x, x, look_ahead_mask)</span><br><span class="line">        out_atten1 = self.dropout1(out_atten1, training=training)</span><br><span class="line">        x = self.layernorm1(out_atten1 + x)</span><br><span class="line">        </span><br><span class="line">        out_atten2 = self.MultiHeadAttention2(enc_output, enc_output, x, padding_mask)</span><br><span class="line">        out_atten2 = self.dropout2(out_atten2, training=training)</span><br><span class="line">        x = self.layernorm2(out_atten2 + x)</span><br><span class="line">        </span><br><span class="line">        out_dense = self.dense_1(x)</span><br><span class="line">        out_dense = self.dense_2(out_dense)</span><br><span class="line">        out_dense = self.dropout3(out_dense, training=training)</span><br><span class="line">        x = self.layernorm3(out_dense + x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
-<p>Encoder는 별로 볼게 없고, Decoder를 보자면 지난번 정의에서 다뤘듯이, 첫번째 Multi-Head Attention과 두번째 Mutli-Head Attention은 다른 입력이 주어지고, 다른 masking이 주어진다.</p>
-<p>따라서 Decoder의 입력으로 출력 sequence, encoder 출력, look ahead masking, padding masking이 들어가야 한다.</p>
-<p>자세한 정의는 part.B를 다시 참고하자.</p>
-<p>참고로, masking은 다음 함수로 만들었다.</p>
-<p><em>file: model/model.py</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_padding_mask</span>(<span class="params">seq</span>):</span><br><span class="line">    seq = tf.cast(tf.math.equal(seq, <span class="number">0</span>), tf.float32)</span><br><span class="line">    <span class="comment"># add extra dimensions to add the padding</span></span><br><span class="line">    <span class="comment"># to the attention logits.</span></span><br><span class="line">    <span class="keyword">return</span> seq[:, tf.newaxis, tf.newaxis, :]  <span class="comment"># (batch_size, 1, 1, seq_len)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_look_ahead_mask</span>(<span class="params">size</span>):</span><br><span class="line">    mask = <span class="number">1</span> - tf.linalg.band_part(tf.ones((size, size)), -<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> mask  <span class="comment"># (seq_len, seq_len)</span></span><br></pre></td></tr></table></figure>
-<p>그리고 최종적으로 이렇게 만든 Encoder, Decoder Block을 쌓아서 Transformer 모델을 만들어야 한다.</p>
-<p>편의상, Encoder모델, Decoder 모델을 만들고 이를 하나로 합쳐서 Transformer 모델을 만들었다.</p>
-<p><em>file: model/model.py</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EncoderModel</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_voc_size, num_layers, max_seq_len, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(EncoderModel, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(input_voc_size, d_model)</span><br><span class="line">        self.pos_encoding = positional_encoding(max_seq_len, self.d_model)</span><br><span class="line">        self.enc_layers = [ Encoder(d_model, num_head, d_ff, drop_out_prob) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_layers) ]</span><br><span class="line">        self.dropout = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, training, mask</span>):</span><br><span class="line">        </span><br><span class="line">        seq_len = tf.shape(x)[<span class="number">1</span>]</span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        x += self.pos_encoding[:, :seq_len, :]</span><br><span class="line">        x = self.dropout(x, training=training)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.num_layers):</span><br><span class="line">            x = self.enc_layers[i](x, training, mask)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">        </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DecoderModel</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, output_voc_size, num_layers, max_seq_len, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(DecoderModel, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(output_voc_size, d_model)</span><br><span class="line">        self.pos_encoding = positional_encoding(max_seq_len, self.d_model)</span><br><span class="line">        </span><br><span class="line">        self.dec_layers = [ Decoder(d_model, num_head, d_ff, drop_out_prob) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_layers) ]</span><br><span class="line">        self.dropout = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, enc_output, training, look_ahead_mask, padding_mask</span>):</span><br><span class="line">        </span><br><span class="line">        seq_len = tf.shape(x)[<span class="number">1</span>]</span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        x += self.pos_encoding[:, :seq_len, :]</span><br><span class="line">        x = self.dropout(x, training=training)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.num_layers):</span><br><span class="line">            x = self.dec_layers[i](x, enc_output, training, look_ahead_mask, padding_mask)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Transformer</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_voc_size, output_voc_size, num_layers, max_seq_len_in, max_seq_len_out, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.Encoder = EncoderModel(input_voc_size, num_layers, max_seq_len_in, d_model, num_head, d_ff, drop_out_prob)</span><br><span class="line">        self.Decoder = DecoderModel(output_voc_size, num_layers, max_seq_len_out, d_model, num_head, d_ff, drop_out_prob)</span><br><span class="line">        </span><br><span class="line">        self.final_layer = tf.keras.layers.Dense(output_voc_size)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs, training</span>):</span><br><span class="line">        inp, tar = inputs</span><br><span class="line">        </span><br><span class="line">        enc_padding_mask, look_ahead_mask, dec_padding_mask = self.create_masks(inp, tar)</span><br><span class="line">        enc_output = self.Encoder(inp, training, enc_padding_mask)</span><br><span class="line">        dec_output = self.Decoder(tar, enc_output, training, look_ahead_mask, dec_padding_mask)</span><br><span class="line">        </span><br><span class="line">        final_output = self.final_layer(dec_output)</span><br><span class="line">        <span class="keyword">return</span> final_output</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create_masks</span>(<span class="params">self, inp, tar</span>):</span><br><span class="line">        enc_padding_mask = create_padding_mask(inp)</span><br><span class="line">        dec_padding_mask = create_padding_mask(inp)</span><br><span class="line"></span><br><span class="line">        look_ahead_mask = create_look_ahead_mask(tf.shape(tar)[<span class="number">1</span>])</span><br><span class="line">        dec_target_padding_mask = create_padding_mask(tar)</span><br><span class="line">        look_ahead_mask = tf.maximum(dec_target_padding_mask, look_ahead_mask)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> enc_padding_mask, look_ahead_mask, dec_padding_mask</span><br></pre></td></tr></table></figure>
-<p>그리고 Transformer에서 보면 Embedding layer를 사용하는데, 이는 Dense와 결과적인 측면에서는 다를 것이 없디. 하지만 token을 vector로 Embedding하는데 있어서 훨씬 효율적이니 되도록 token을 vector로 임베딩할때 이걸 사용하도록 하자.</p>
-<p>각 Encoder와 Decoder는 num_layer(hyper parameter)만큼 Encoder, Decoder 블록을 반복해서 쌓고, 그것들을 차례로 출력으로 내놓는다. 이제 2개를 합쳐서 간단하게 Transformer 모델이 완성되는 것이다.</p>
-<p>이쯤되면 필자들도 느낄 것이다. 이럴때 Model Subclassing API가 빛을 발휘한다. 이 각각의 Component들을 함수로만 구현하는 것 보다는 class로 묶어서 관리하는 것이 가독성, 유지보수 측면에서 훨씬 이득이다.</p>
-<p>그리고 논문에 의하면, Transformer는 독자적인 learning rate scheduler를 가진다. 이 수식은 다음과 같다.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/lr_schedule.png" width="50%"></p>
-
-<p>이를 구현하기 위해서 다음과 같이 Custom Scheduler를 만들 수 있다.</p>
-<p><em>file: model/model.py</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CustomSchedule</span>(keras.optimizers.schedules.LearningRateSchedule):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, warmup_steps=<span class="number">4000</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(CustomSchedule, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.d_model_save = d_model</span><br><span class="line">        self.d_model = tf.cast(d_model, tf.float32)</span><br><span class="line"></span><br><span class="line">        self.warmup_steps = warmup_steps</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, step</span>):</span><br><span class="line">        arg1 = tf.math.rsqrt(step)</span><br><span class="line">        arg2 = step * (self.warmup_steps ** -<span class="number">1.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tf.math.rsqrt(self.d_model) * tf.math.minimum(arg1, arg2)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_config</span>(<span class="params">self</span>):</span><br><span class="line">        config = &#123;</span><br><span class="line">            <span class="string">&#x27;d_model&#x27;</span>: self.d_model_save,</span><br><span class="line">            <span class="string">&#x27;warmup_steps&#x27;</span>: self.warmup_steps,</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> config</span><br></pre></td></tr></table></figure>
-<p>여기까지 구현하면 Transformer의 구현은 끝이 난다. 굳이 여기서는 Training loop까지는 다루지 않겠다. 한번 필자가 직접 완성해 보도록 하자. 정 모르겠다면 필자의 github에 완성판이 있으니 직접 가서 찾아 보기를 바란다.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -2391,20 +2645,20 @@ M_{out} = \text{Concat}(O_1, O_2, ..., O_{H_n}) W^O
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

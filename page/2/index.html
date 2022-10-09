@@ -129,17 +129,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags<span class="badge">14</span></a>
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags<span class="badge">15</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives<span class="badge">20</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives<span class="badge">21</span></a>
 
   </li>
   </ul>
@@ -165,6 +165,180 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kimh060612.github.io/2022/03/05/Transformer-C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Michael Kim">
+      <meta itemprop="description" content="Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michael's Study Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/05/Transformer-C/" class="post-title-link" itemprop="url">Transformer 강의 내용 part.C</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-05 19:28:31" itemprop="dateCreated datePublished" datetime="2022-03-05T19:28:31+09:00">2022-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-30 00:00:32" itemprop="dateModified" datetime="2022-05-30T00:00:32+09:00">2022-05-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/03/05/Transformer-C/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/05/Transformer-C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><em>본 포스트는 해당 링크의 <a target="_blank" rel="noopener" href="https://wikidocs.net/22893">블로그</a>와 논문 “Attention is all you need”를 참조하여 작성되었음을 알립니다.</em></p>
+<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><ol>
+<li><del>Attention!</del><ul>
+<li><del>Seq2Seq</del></li>
+<li><del>Attention in Seq2Seq</del></li>
+</ul>
+</li>
+<li><del>Transformer Encoder</del><ul>
+<li><del>Attention in Transformer</del></li>
+<li><del>Multi-Head Attention</del></li>
+<li><del>Masking</del></li>
+<li><del>Feed Forward</del></li>
+</ul>
+</li>
+<li><del>Transformer Decoder</del></li>
+<li><del>Positional Encoding</del></li>
+<li>Partice<ul>
+<li>Seq2Seq Attention</li>
+<li>Transformer</li>
+</ul>
+</li>
+</ol>
+<p><br></p>
+<h3 id="Partice"><a href="#Partice" class="headerlink" title="Partice"></a>Partice</h3><hr>
+<p>이 파트에서는 지난 시간부터 쭉 다뤄온 Attention과 Transformer를 구현해 보는 시간을 가질 것이다. 본격적으로 Model Subclassing API를 제대로 활용하는 시간이 될 것이다.</p>
+<h4 id="Seq2Seq-Attention"><a href="#Seq2Seq-Attention" class="headerlink" title="Seq2Seq Attention"></a>Seq2Seq Attention</h4><p>Transformer 구조를 보기 전에 Attention을 Seq2Seq 모델에 적용시켜 보도록 하겠다. 먼저 소스코드부터 보고 가자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Attention</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Attention, self).__init__()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, q, k, v, mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># q: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, seq_len, d_model)</span></span><br><span class="line"></span><br><span class="line">        matmul_qk = tf.matmul(q, k, transpose_b=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># qk^T : (batch_size, seq_len, seq_len)</span></span><br><span class="line"></span><br><span class="line">        dk = tf.cast(tf.shape(k)[-<span class="number">1</span>], tf.float32)</span><br><span class="line">        scaled_attention_logits = matmul_qk / tf.math.sqrt(dk)</span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            scaled_attention_logits += (mask * -<span class="number">1e9</span>)</span><br><span class="line">        </span><br><span class="line">        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-<span class="number">1</span>)</span><br><span class="line">        output = tf.matmul(attention_weights, v)</span><br><span class="line">        <span class="comment"># output: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="keyword">return</span> output, attention_weights</span><br></pre></td></tr></table></figure>
+<p>우선 우리가 사용할 Attention 구조이다. 지난 Transformer part.A에서 정의한 연산(masking 포함)을 고대로 구현한 것이다.<br>이를 어떻게 Seq2Seq 모델에 적용하는지는 밑의 그림과 소스코드를 보자.</p>
+<p align="center"><img src="https://kimh060612.github.io/img/Attention.png" width="100%"></p>
+
+<p>위 그림에 따르면 일단 Seq2Seq는 Encoder와 Decoder가 각기 다른 모델로 있다. 그리고 Encoder에서 나온 모든 time step의 출력과 Decoder의 출력을 같이 사용해서 연산을 해야할 필요가 있다.</p>
+<p>필자는 일단 Decoder에 Encoder의 모든 Time step의 출력을 넣는 형식으로 구현을 하였다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, WORDS_NUM, emb_dim, hidden_unit, batch_size, *args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(*args, **kwargs)</span><br><span class="line">        self.batch_size = batch_size</span><br><span class="line">        self.hidden_unit = hidden_unit</span><br><span class="line">        self.embedding = keras.layers.Embedding(WORDS_NUM, emb_dim)</span><br><span class="line">        self.LSTM = keras.layers.LSTM(hidden_unit, return_state=<span class="literal">True</span>, return_sequences=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs, enc_hidden = <span class="literal">None</span></span>):</span><br><span class="line">        x = self.embedding(inputs)</span><br><span class="line">        y, h, _ = self.LSTM(x, initial_state=enc_hidden)</span><br><span class="line">        <span class="keyword">return</span> y, h</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decoder</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, WORDS_NUM, emb_dim, hidden_unit, *args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(*args, **kwargs)</span><br><span class="line">        self.embedding = keras.layers.Embedding(WORDS_NUM, emb_dim)</span><br><span class="line">        self.lstm = tf.keras.layers.LSTM(hidden_unit, return_sequences=<span class="literal">True</span>, return_state=<span class="literal">True</span>)</span><br><span class="line">        self.attention = Attention()</span><br><span class="line">        self.dense = tf.keras.layers.Dense(WORDS_NUM, activation=<span class="string">&#x27;softmax&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, hidden, mask=<span class="literal">None</span></span>):</span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        _, h, c = self.lstm(x)</span><br><span class="line">        context_vec, attention_weight = self.attention(h, hidden, hidden, mask=mask)</span><br><span class="line">        </span><br><span class="line">        x_ = tf.concat([context_vec, c], axis=-<span class="number">1</span>)</span><br><span class="line">        out = self.dense(x_)</span><br><span class="line">        <span class="keyword">return</span> out, h, attention_weight</span><br></pre></td></tr></table></figure>
+<p>소스코드를 보기 전에 Attention의 $Q$, $K$, $V$의 정의를 먼저 상기하고 가자.</p>
+<p>$Q$ : 특정 시점의 디코더 셀에서의 은닉 상태<br>$K$ : 모든 시점의 인코더 셀의 은닉 상태들<br>$V$ : 모든 시점의 인코더 셀의 은닉 상태들  </p>
+<p>Encoder에서는 Decoder에서 활용하기 위해서 2개의 출력을 내놓는다. 본인의 출력값과 hidden state의 값이다.</p>
+<p>Decoder에서는 Encoder에서의 Hidden state를 입력으로 받아서 자신의 hidden state와 같이 attention! 을 진행한다.</p>
+<p>이렇게 만들어진 vector와 마지막 출력 값을 concatenation한 값을 dense에 넣어서 최종적인 출력을 내 놓는다.</p>
+<p>이의 training loop를 보면 더 이해가 잘 될 것이다. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tf.function</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">inp, targ, enc_hidden</span>):</span><br><span class="line">    loss = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        _, enc_hidden = encoder(inp, enc_hidden)</span><br><span class="line">        dec_hidden = enc_hidden</span><br><span class="line">        dec_input = tf.expand_dims([targ_lang.word_index[<span class="string">&#x27;&lt;start&gt;&#x27;</span>]] * BATCH_SIZE, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, targ.shape[<span class="number">1</span>]):</span><br><span class="line">            predictions, dec_hidden, _ = decoder(dec_input, dec_hidden)</span><br><span class="line">            loss += loss_function(targ[:, t], predictions)</span><br><span class="line">            dec_input = tf.expand_dims(targ[:, t], <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        batch_loss = (loss / <span class="built_in">int</span>(targ.shape[<span class="number">1</span>]))</span><br><span class="line">        </span><br><span class="line">        variables = encoder.trainable_variables + decoder.trainable_variables</span><br><span class="line">        gradients = tape.gradient(loss, variables)</span><br><span class="line">        optimizer.apply_gradients(<span class="built_in">zip</span>(gradients, variables))</span><br><span class="line">        <span class="keyword">return</span> batch_loss</span><br></pre></td></tr></table></figure>
+<h4 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h4><p>이제 대망의 Transformer이다. 먼저 Transformer를 구현하기 위해서 어떤 Component들이 필요했는지 알아보자.</p>
+<ol>
+<li>Multi-head Attention</li>
+<li>Positional Encoding</li>
+<li>Encoder Blocks</li>
+<li>Decoder Blocks</li>
+</ol>
+<p>우리는 이 4가지 Component들을 각각 순차적으로 구현하고 이를 통해서 최종 모델을 구현할 것이다.</p>
+<p><em>file: model/layer.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MultiHeadAttention</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_head</span>):</span><br><span class="line">        <span class="built_in">super</span>(MultiHeadAttention, self).__init__()        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> d_model % num_head  == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;Invalid head and d_model!&quot;</span>)</span><br><span class="line">        self.d_k = d_model // num_head</span><br><span class="line">        self.num_head = num_head</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        </span><br><span class="line">        self.Wq = keras.layers.Dense(self.d_model)</span><br><span class="line">        self.Wk = keras.layers.Dense(self.d_model)</span><br><span class="line">        self.Wv = keras.layers.Dense(self.d_model)</span><br><span class="line">        </span><br><span class="line">        self.dense = keras.layers.Dense(self.d_model, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">split_head</span>(<span class="params">self, batch_size, x</span>):</span><br><span class="line">        x = tf.reshape(x, (batch_size, -<span class="number">1</span>, self.num_head, self.d_k))</span><br><span class="line">        <span class="keyword">return</span> tf.transpose(x, perm=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, q, k, v, mask = <span class="literal">None</span></span>):</span><br><span class="line">        batch_size = q.shape[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        q, k, v = self.Wq(q), self.Wk(k), self.Wv(v)</span><br><span class="line">        <span class="comment"># q: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, seq_len, d_model)</span></span><br><span class="line">        </span><br><span class="line">        q, k, v = self.split_head(batch_size, q), self.split_head(batch_size, k), self.split_head(batch_size, v)</span><br><span class="line">        <span class="comment"># q: (batch_size, num_head, seq_len, d_k)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, num_head, seq_len, d_k)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, num_head, seq_len, d_v)</span></span><br><span class="line">        </span><br><span class="line">        qkT = tf.matmul(q, k, transpose_b=<span class="literal">True</span>) <span class="comment"># (batch_size, num_head, seq_len, seq_len)</span></span><br><span class="line">        d_k = tf.cast(self.d_k, dtype=tf.float32)</span><br><span class="line">        scaled_qkT = qkT / tf.math.sqrt(d_k)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> mask == <span class="literal">None</span>:</span><br><span class="line">            scaled_qkT += (mask * -<span class="number">1e9</span>)</span><br><span class="line">        </span><br><span class="line">        attention_dist = tf.nn.softmax(scaled_qkT, axis=-<span class="number">1</span>)</span><br><span class="line">        attention = tf.matmul(attention_dist, v) <span class="comment"># (batch_size, num_head, seq_len, d_k)</span></span><br><span class="line">        </span><br><span class="line">        attention = tf.transpose(attention, perm=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>]) <span class="comment"># (batch_size, seq_len, num_head, d_k)</span></span><br><span class="line">        concat_attention = tf.reshape(attention, (batch_size, -<span class="number">1</span>, self.d_model)) <span class="comment"># (batch_size, seq_len, d_model)</span></span><br><span class="line">        output = self.dense(concat_attention)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+<p>각 연산 뒤에 차원을 적어 두었으니 이해하기는 어렵지 않을 것이다. 구체적인 정의가 떠오르지 않을 독자들을 위해서 Multi-Head Attention의 수식을 적어두고 가겠다.</p>
+<script type="math/tex; mode=display">
+\text{Attention}(Q, K, V) = \text{Softmax}(\frac{Q_iK_i^T}{\sqrt{d_k}})V_i
+\tag{definition 3}</script><script type="math/tex; mode=display">
+M_{out} = \text{Concat}(O_1, O_2, ..., O_{H_n}) W^O
+\tag{equation 1}</script><p>위 수식을 고대~로 구현한 것 밖에 되지 않는다.</p>
+<p>그리고 positional Encoding은 다음과 같이 구현했다.</p>
+<p><em>file: model/layer.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_angles</span>(<span class="params">pos, i, d_model</span>):</span><br><span class="line">    angle_rates = <span class="number">1</span> / np.power(<span class="number">10000</span>, (<span class="number">2</span> * (i//<span class="number">2</span>)) / np.float32(d_model))</span><br><span class="line">    <span class="keyword">return</span> pos * angle_rates</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">positional_encoding</span>(<span class="params">position, d_model</span>):</span><br><span class="line">    angle_rads = get_angles(np.arange(position)[:, np.newaxis], np.arange(d_model)[np.newaxis, :], d_model)</span><br><span class="line"></span><br><span class="line">    angle_rads[:, <span class="number">0</span>::<span class="number">2</span>] = np.sin(angle_rads[:, <span class="number">0</span>::<span class="number">2</span>])</span><br><span class="line">    angle_rads[:, <span class="number">1</span>::<span class="number">2</span>] = np.cos(angle_rads[:, <span class="number">1</span>::<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">    pos_encoding = angle_rads[np.newaxis, ...]</span><br><span class="line">    <span class="keyword">return</span> tf.cast(pos_encoding, dtype=tf.float32)</span><br></pre></td></tr></table></figure>
+<p>이것 또한 정의를 고대로 구현한 것이다. <del>(참 쉽죠?)</del></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    PE_{(pos, 2i)} = \sin(pos/10000^{2i/d_{model}}) \\
+    PE_{(pos, 2i + 1)} = \cos(pos/10000^{2i/d_{model}})
+\end{aligned}</script><p>이제 Encoder와 Decoder Block을 구현할 차례이다. 귀찮으니 한번에 소스를 적어 두도록 하겠다.</p>
+<p><em>file: model/layer.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(Encoder, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_head = num_head</span><br><span class="line">        </span><br><span class="line">        self.MultiHeadAttention = MultiHeadAttention(d_model=d_model, num_head=num_head)</span><br><span class="line">        </span><br><span class="line">        self.dense_1 = keras.layers.Dense(d_ff, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        self.dense_2 = keras.layers.Dense(d_model, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        self.layernorm1 = keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm2 = keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line"></span><br><span class="line">        self.dropout1 = keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        self.dropout2 = keras.layers.Dropout(drop_out_prob)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, training=<span class="literal">True</span>, mask=<span class="literal">None</span></span>):</span><br><span class="line">        </span><br><span class="line">        out_atten = self.MultiHeadAttention(x, x, x, mask)</span><br><span class="line">        out_atten = self.dropout1(out_atten, training=training)</span><br><span class="line">        x = self.layernorm1(out_atten + x)</span><br><span class="line">        </span><br><span class="line">        out_dense = self.dense_1(x)</span><br><span class="line">        out_dense = self.dense_2(out_dense)</span><br><span class="line">        out_dense = self.dropout2(out_dense, training=training)</span><br><span class="line">        x = self.layernorm2(out_dense + x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decoder</span>(keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(Decoder, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_head = num_head</span><br><span class="line">        self.MultiHeadAttention1 = MultiHeadAttention(d_model, num_head)</span><br><span class="line">        self.MultiHeadAttention2 = MultiHeadAttention(d_model, num_head)</span><br><span class="line">        </span><br><span class="line">        self.dense_1 = keras.layers.Dense(d_ff, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        self.dense_2 = keras.layers.Dense(d_model, activation=<span class="string">&quot;relu&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        self.layernorm1 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm2 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.layernorm3 = tf.keras.layers.LayerNormalization(epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        self.dropout1 = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        self.dropout2 = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        self.dropout3 = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, enc_output, training, look_ahead_mask, padding_mask</span>):</span><br><span class="line">        </span><br><span class="line">        out_atten1 = self.MultiHeadAttention1(x, x, x, look_ahead_mask)</span><br><span class="line">        out_atten1 = self.dropout1(out_atten1, training=training)</span><br><span class="line">        x = self.layernorm1(out_atten1 + x)</span><br><span class="line">        </span><br><span class="line">        out_atten2 = self.MultiHeadAttention2(enc_output, enc_output, x, padding_mask)</span><br><span class="line">        out_atten2 = self.dropout2(out_atten2, training=training)</span><br><span class="line">        x = self.layernorm2(out_atten2 + x)</span><br><span class="line">        </span><br><span class="line">        out_dense = self.dense_1(x)</span><br><span class="line">        out_dense = self.dense_2(out_dense)</span><br><span class="line">        out_dense = self.dropout3(out_dense, training=training)</span><br><span class="line">        x = self.layernorm3(out_dense + x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+<p>Encoder는 별로 볼게 없고, Decoder를 보자면 지난번 정의에서 다뤘듯이, 첫번째 Multi-Head Attention과 두번째 Mutli-Head Attention은 다른 입력이 주어지고, 다른 masking이 주어진다.</p>
+<p>따라서 Decoder의 입력으로 출력 sequence, encoder 출력, look ahead masking, padding masking이 들어가야 한다.</p>
+<p>자세한 정의는 part.B를 다시 참고하자.</p>
+<p>참고로, masking은 다음 함수로 만들었다.</p>
+<p><em>file: model/model.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_padding_mask</span>(<span class="params">seq</span>):</span><br><span class="line">    seq = tf.cast(tf.math.equal(seq, <span class="number">0</span>), tf.float32)</span><br><span class="line">    <span class="comment"># add extra dimensions to add the padding</span></span><br><span class="line">    <span class="comment"># to the attention logits.</span></span><br><span class="line">    <span class="keyword">return</span> seq[:, tf.newaxis, tf.newaxis, :]  <span class="comment"># (batch_size, 1, 1, seq_len)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_look_ahead_mask</span>(<span class="params">size</span>):</span><br><span class="line">    mask = <span class="number">1</span> - tf.linalg.band_part(tf.ones((size, size)), -<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> mask  <span class="comment"># (seq_len, seq_len)</span></span><br></pre></td></tr></table></figure>
+<p>그리고 최종적으로 이렇게 만든 Encoder, Decoder Block을 쌓아서 Transformer 모델을 만들어야 한다.</p>
+<p>편의상, Encoder모델, Decoder 모델을 만들고 이를 하나로 합쳐서 Transformer 모델을 만들었다.</p>
+<p><em>file: model/model.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EncoderModel</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_voc_size, num_layers, max_seq_len, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(EncoderModel, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(input_voc_size, d_model)</span><br><span class="line">        self.pos_encoding = positional_encoding(max_seq_len, self.d_model)</span><br><span class="line">        self.enc_layers = [ Encoder(d_model, num_head, d_ff, drop_out_prob) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_layers) ]</span><br><span class="line">        self.dropout = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, training, mask</span>):</span><br><span class="line">        </span><br><span class="line">        seq_len = tf.shape(x)[<span class="number">1</span>]</span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        x += self.pos_encoding[:, :seq_len, :]</span><br><span class="line">        x = self.dropout(x, training=training)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.num_layers):</span><br><span class="line">            x = self.enc_layers[i](x, training, mask)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">        </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DecoderModel</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, output_voc_size, num_layers, max_seq_len, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(DecoderModel, self).__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(output_voc_size, d_model)</span><br><span class="line">        self.pos_encoding = positional_encoding(max_seq_len, self.d_model)</span><br><span class="line">        </span><br><span class="line">        self.dec_layers = [ Decoder(d_model, num_head, d_ff, drop_out_prob) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_layers) ]</span><br><span class="line">        self.dropout = tf.keras.layers.Dropout(drop_out_prob)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, x, enc_output, training, look_ahead_mask, padding_mask</span>):</span><br><span class="line">        </span><br><span class="line">        seq_len = tf.shape(x)[<span class="number">1</span>]</span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        x += self.pos_encoding[:, :seq_len, :]</span><br><span class="line">        x = self.dropout(x, training=training)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.num_layers):</span><br><span class="line">            x = self.dec_layers[i](x, enc_output, training, look_ahead_mask, padding_mask)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Transformer</span>(keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_voc_size, output_voc_size, num_layers, max_seq_len_in, max_seq_len_out, d_model, num_head, d_ff, drop_out_prob = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.Encoder = EncoderModel(input_voc_size, num_layers, max_seq_len_in, d_model, num_head, d_ff, drop_out_prob)</span><br><span class="line">        self.Decoder = DecoderModel(output_voc_size, num_layers, max_seq_len_out, d_model, num_head, d_ff, drop_out_prob)</span><br><span class="line">        </span><br><span class="line">        self.final_layer = tf.keras.layers.Dense(output_voc_size)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs, training</span>):</span><br><span class="line">        inp, tar = inputs</span><br><span class="line">        </span><br><span class="line">        enc_padding_mask, look_ahead_mask, dec_padding_mask = self.create_masks(inp, tar)</span><br><span class="line">        enc_output = self.Encoder(inp, training, enc_padding_mask)</span><br><span class="line">        dec_output = self.Decoder(tar, enc_output, training, look_ahead_mask, dec_padding_mask)</span><br><span class="line">        </span><br><span class="line">        final_output = self.final_layer(dec_output)</span><br><span class="line">        <span class="keyword">return</span> final_output</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create_masks</span>(<span class="params">self, inp, tar</span>):</span><br><span class="line">        enc_padding_mask = create_padding_mask(inp)</span><br><span class="line">        dec_padding_mask = create_padding_mask(inp)</span><br><span class="line"></span><br><span class="line">        look_ahead_mask = create_look_ahead_mask(tf.shape(tar)[<span class="number">1</span>])</span><br><span class="line">        dec_target_padding_mask = create_padding_mask(tar)</span><br><span class="line">        look_ahead_mask = tf.maximum(dec_target_padding_mask, look_ahead_mask)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> enc_padding_mask, look_ahead_mask, dec_padding_mask</span><br></pre></td></tr></table></figure>
+<p>그리고 Transformer에서 보면 Embedding layer를 사용하는데, 이는 Dense와 결과적인 측면에서는 다를 것이 없디. 하지만 token을 vector로 Embedding하는데 있어서 훨씬 효율적이니 되도록 token을 vector로 임베딩할때 이걸 사용하도록 하자.</p>
+<p>각 Encoder와 Decoder는 num_layer(hyper parameter)만큼 Encoder, Decoder 블록을 반복해서 쌓고, 그것들을 차례로 출력으로 내놓는다. 이제 2개를 합쳐서 간단하게 Transformer 모델이 완성되는 것이다.</p>
+<p>이쯤되면 필자들도 느낄 것이다. 이럴때 Model Subclassing API가 빛을 발휘한다. 이 각각의 Component들을 함수로만 구현하는 것 보다는 class로 묶어서 관리하는 것이 가독성, 유지보수 측면에서 훨씬 이득이다.</p>
+<p>그리고 논문에 의하면, Transformer는 독자적인 learning rate scheduler를 가진다. 이 수식은 다음과 같다.</p>
+<p align="center"><img src="https://kimh060612.github.io/img/lr_schedule.png" width="50%"></p>
+
+<p>이를 구현하기 위해서 다음과 같이 Custom Scheduler를 만들 수 있다.</p>
+<p><em>file: model/model.py</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CustomSchedule</span>(keras.optimizers.schedules.LearningRateSchedule):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, warmup_steps=<span class="number">4000</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(CustomSchedule, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.d_model_save = d_model</span><br><span class="line">        self.d_model = tf.cast(d_model, tf.float32)</span><br><span class="line"></span><br><span class="line">        self.warmup_steps = warmup_steps</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, step</span>):</span><br><span class="line">        arg1 = tf.math.rsqrt(step)</span><br><span class="line">        arg2 = step * (self.warmup_steps ** -<span class="number">1.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tf.math.rsqrt(self.d_model) * tf.math.minimum(arg1, arg2)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_config</span>(<span class="params">self</span>):</span><br><span class="line">        config = &#123;</span><br><span class="line">            <span class="string">&#x27;d_model&#x27;</span>: self.d_model_save,</span><br><span class="line">            <span class="string">&#x27;warmup_steps&#x27;</span>: self.warmup_steps,</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> config</span><br></pre></td></tr></table></figure>
+<p>여기까지 구현하면 Transformer의 구현은 끝이 난다. 굳이 여기서는 Training loop까지는 다루지 않겠다. 한번 필자가 직접 완성해 보도록 하자. 정 모르겠다면 필자의 github에 완성판이 있으니 직접 가서 찾아 보기를 바란다.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1748,337 +1922,10 @@ u_{ijm}^l = \sum^{H - 1}_{p = 0} \sum^{W - 1}_{q = 0} \sum^{K - 1}_{k = 0} z^{l 
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kimh060612.github.io/2022/03/05/FCNN-A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Michael Kim">
-      <meta itemprop="description" content="Backend Engineering, Deep learning, Algorithm & DS, CS 전공 지식 공부 저장소">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Michael's Study Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/05/FCNN-A/" class="post-title-link" itemprop="url">Fully Connected Neural Network 강의 내용 part.A</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-05 17:32:02" itemprop="dateCreated datePublished" datetime="2022-03-05T17:32:02+09:00">2022-03-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-30 00:00:32" itemprop="dateModified" datetime="2022-05-30T00:00:32+09:00">2022-05-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2022/03/05/FCNN-A/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/05/FCNN-A/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><em>본 포스트는 Hands-on Machine learning 2nd Edition, CS231n, Tensorflow 공식 document를 참조하여 작성되었음을 알립니다.</em></p>
-<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><ol>
-<li>Basic of Neural Network  </li>
-<li>Definition of Fully Connected Neural Network(FCNN)</li>
-<li>Feed Forward of FCNN</li>
-<li>Gradient Descent</li>
-<li>Back Propagation of FCNN</li>
-<li>Hyper parameter tuning</li>
-<li>Partice</li>
-</ol>
-<p>여기서는 1~5는 Part. A이고 6,7은 Part. B에서 다루도록 하겠다.<br><br></p>
-<h3 id="Basic-of-Neural-Network"><a href="#Basic-of-Neural-Network" class="headerlink" title="Basic of Neural Network"></a>Basic of Neural Network</h3><hr>
-<p>Neural Network의 기본을 설명할때 항상 나오는 것이 바로 뉴런 구조 사진이다. 여기서는 그들을 생략하도록 하겠다. 굳이 여기서 설명할 필요를 못 느끼겠다.<br>궁금하면 SLP(Single Layer Perceptron)와 MLP(Multi Layer Perceptron)에 대해서 구글링을 해보도록 하자.</p>
-<p>우선 FCNN을 본격적으로 들어가기 전에, 지도 학습에 대한 Deep learning의 학습 프로세스에 대한 개략적인 모식도를 보고 가자.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/DeepProcess_1.png" width="100%"></p>
-
-<p>이러한 모식도에 개략적인 생략이 들어 갔고, 반례도 충분히 있겠지만, 지도 학습의 형태로 학습하는 대부분의 Neural Network는 이런 Process로 학습을 하게 된다.<br>앞으로 나오는 신경망 구조들 중에서 위의 “출력”, “평가”, “학습”의 3가지의 과정을 집중적으로 기술할 생각이다. </p>
-<p>그렇다면 Neural Network 구조를 활용해서 풀 수 있는 문제는 무엇이 있을까?<br>여기서는 크게 2가지만 다룰 예정이다. </p>
-<ol>
-<li><em>Classification</em>: 어떤 입력을 특정 범주로 분류해내는 문제. </li>
-<li><em>Regression</em>: 어떤 변수들 사이의 관계를 도출해내는 문제. (Modeling에 가깝다고 생각하면 편함.)</li>
-</ol>
-<p>이러한 2개의 문제의 범주를 설명하고 넘어가는 이유는 Neural Network로 어떤 문제를 풀 것이냐에 따라서 학습 과정에서 다양한 부분이 상이하게 변하기 때문이다. 이는 나중에 따로 자세하게 다룰 예정이다. 지금은 일단 이런 것이 있다 라는 것만 알아두고 가자.</p>
-<p><br></p>
-<h3 id="Definition-of-FCNN"><a href="#Definition-of-FCNN" class="headerlink" title="Definition of FCNN"></a>Definition of FCNN</h3><hr>
-<p>여기서는 Fully Connected Nueral Network의 정의를 먼저 알아보도록 하겠다. 간단하게 이를 표현하자면 다음과 같은 구조를 가지는 Neural Network를 일컫는다.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/FCNN.png" width="100%"></p>
-
-<p><em>Figure 1: FCNN의 모식도 1</em><br>이렇게 앞층의 뉴런과 뒷층의 뉴런이 빠짐없이 전부 연결된 구조를 FCNN이라고 한다. 여기서 만약 독자가 MLP를 모르는 상태라면 위의 구조가 상당히 추상적으로 다가올 것이다. 간단하게 생각해서, 각 뉴런들은 숫자를 가지고 있다고 생각하면 된다. 다음 그림을 보면 훨씬 쉽게 이해할 수 있다.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/FCNN2.png" width="100%"></p>
-
-<p><em>Figure 2: FCNN의 모식도 2</em></p>
-<p>이렇게 층의 뉴런마다 간선으로 연결되어 있고 각 뉴런들은 뒤의 뉴런들에게 어떠한 가중치를 반영해서 자신의 값을 가지고 있다고 생각하면 된다. 이제부터 우리는 이러한 구조를 가진 Neural Network가 어떻게 주어진 문제에 대해서 결과를 도출하고 학습을 진행하는지 알아보도록 하겠다. </p>
-<p><br></p>
-<h3 id="Feed-Forward-of-FCNN"><a href="#Feed-Forward-of-FCNN" class="headerlink" title="Feed Forward of FCNN"></a>Feed Forward of FCNN</h3><hr>
-<p>이 과정은 학습이 되었건 되지 않았건 FCNN의 구조에서 입력을 통해 출력을 얻어내는 과정이다. 층층이 쌓인 Neural Network 구조에서 앞으로 계속 나아가면서 결과를 도출해 내는 모습에서 Feed Forward(앞 먹임)이라는 이름이 붙은 것이다.<br>앞으로 대부분의 예시는 <em>Figure 2</em>와 비슷한 형식으로 나올 것이다. 그리고 앞으로는 <em>뉴런</em>이라는 명칭보다는 <em>Unit</em>이라는 명칭을 사용할 것이다.<br>이제, 이전 슬라이드에 있는 것들을 기호를 명확하게 정의해 보도록 하겠다.</p>
-<blockquote>
-<p><em>Definition 1</em></p>
-</blockquote>
-<ul>
-<li>$x_i$: 입력 벡터의 $i$번째 원소</li>
-<li>$u_i^k$: $k$번째 Layer의 $i$번째 Hidden Units의 값.</li>
-<li>$w^k_{ij}$: $k$번째 층의 $i$번째 Unit과 $k-1$번째 층의 $j$번째 Unit을 이어주는 가중치</li>
-<li>$y_i$: 출력층의 $i$번째 Unit</li>
-<li>$n_k$: $k$번째 층의 Unit의 갯수</li>
-</ul>
-<p>그렇다면 이제 Feed Forward를 위해서 가장 중요한 부분을 설명하도록 하겠다. Weighted Sum(가중합)에 대한 부분이다.<br>앞선 <em>Figure 1</em>과 <em>Figure 2</em>에서 앞층과 뒷층의 관계를 우리는 다음과 같이 정의한 것이다.</p>
-<script type="math/tex; mode=display">
-u_i^k = \sum_{j=1}^{n^{k-1}}w^k_{ij}u^{k-1}_j
-\tag{Equation (2)}</script><p>정말 단순하게 생각해서 이전 유닛에 해당하는 가중치만큼 앞의 유닛에 반영해 주면 되는 것이다. 이렇게 뒤의 층에서 앞의 층으로 순차적으로 계산해 나가면 된다.</p>
-<p>하지만 여기에는 치명적인 문제점이 있다. 바로, 이렇게 된다면 Neural Network 구조로 Linear Function 밖에 표현할 수 없다는 것이다.<br>위의  $equation (1)$의 형식으로 Feed Foward를 진행하게 된다면 층을 쌓는 것이 의미가 없어진다. 그 이유는 단순히 일변수 선형 함수를 생각해보면 알 수 있다.<br>우리가 $y = a_ix$라는 임의의 $N$개의 함수들을 층층이 쌓는다 할저언정 그것은 새로운 선형 함수 $y = a’x, \quad a’ = a_1a_2a_3\cdot\cdot\cdot a_N$ 를 만들어 내는 것과 별반 다를 것이 없다. 이렇게 되면 가장 대표적인 문제점은 바로 XOR문제를 해결할 수 없다는 것이다. 이는 너무 보편적인 문제라서 그냥 구글링 하면 나보다 설명 잘해놓은 글이 널려있다. 따라서 여기서는 생략한다.<br>똑같은 논리이다. 이에 대한 자세한 논의는 Appendix. A에 자세히 기술하도록 하겠다.</p>
-<p>이러한 문제를 해결하고 더 다양한 함수를 신경망이 표현할 수 있게 하기 위해서 Activation function과 Bias를 적용하게 된다.</p>
-<blockquote>
-<p>Activation Function(활성 함수)</p>
-</blockquote>
-<p>신경망이 Linear한 함수만을 근사시키는 것을 방지하기 위해서 중간에 Non Linear Function을 Unit에 적용하게 된다. 이때 이러한 함수를 Non linear function이라고 한다. 그렇다고, 전부 Non linear인 것은 아니다. 하지만 Non linear function이여야 앞선 문제가 발생하지 않을 것이다. 그 종류는 대략 다음과 같다.</p>
-<ol>
-<li>Sigmoid: $\sigma(x) = \frac{1}{1+\exp(-x)}$</li>
-<li>ReLU(Rectified Linear Unit): $max(0, x)$</li>
-<li>Leaky ReLU: $max(0.1x, x)$</li>
-<li>Hyperbolic tangent: $\tanh(x) = \frac{\exp(x) - \exp(-x)}{\exp(x) + \exp(-x)}$</li>
-<li>ELU(Exponential Linear Unit): $\sigma(x) = xu(x) + a(\exp(x)-1)u(-x)$</li>
-</ol>
-<p>이것 뿐만 아니라 진짜 개 많다. 나머지는 Tensorflow 공식 Document나 구글링을 통해서 알아보도록 하라. </p>
-<p>이렇게 Activation Function을 씌운 값을 앞으로는 다음과 같이 표현하도록 하겠다.</p>
-<blockquote>
-<p><em>Defintion 2</em>: 활성함수를 적용한 Unit의 값.</p>
-</blockquote>
-<script type="math/tex; mode=display">z_i^k = f(u^k_i)</script><blockquote>
-<p>Bias (편향)</p>
-</blockquote>
-<p>Bias로써는 Non Linear성을 신경망에 추가할 수는 없다. 하지만 Activation Function을 평행 이동 시켜주는 역할을 하게 해서 입력이 0인 지점에서의 신경망의 자율도를 높여주게 된다. 예를 들어보자. 위에 예시를 든 Activation function들에서는 예를 들어서 $(0, 32)$같은 점을 표현할 수 없다. 그렇기 때문에 Bias를 주어서 평행 이동을 시켜주는 것이다. 이것의 유무가 신경망의 학습 양상과 성능이 크게 차이를 주는 경우가 많다. </p>
-<p>즉, 최대한 많은 함수를 근사할 수 있도록 위와 같은 설정을 추가해 주는 것이다.<br>이러면 어떤 잼민이는 이런 질문을 할 수 있을 것이다.</p>
-<blockquote>
-<p>???: 아 ㅋㅋㅋㅋ 그런 근사 못 하는 함수는 어쩔건데요 ㅋㅋ루삥뽕</p>
-</blockquote>
-<p>걱정 마라. 이미 <em>만능 근사 정리</em>(<em>Universal Approximation Theorem</em>, <em>시벤코 정리</em>)에 의해서 증명되었다. 그냥 안심하고 쓰면 된다.</p>
-<p>그렇다면 Bias를 적용해서 다시금 Unit의 값을 작성해 보자.</p>
-<blockquote>
-<p><em>Definition 3</em>: Bias를 적용한 Unit의 값  </p>
-</blockquote>
-<script type="math/tex; mode=display">
-u_i^k = \sum_{j=1}^{n_{k-1}}w^k_{ij}z^{k-1}_j + b^k_i
-\tag{Equation (2)}</script><p><br></p>
-<p align="center"><img src="https://kimh060612.github.io/img/FCNN3.png" width="100%"></p>
-
-<p><em>Figure 3: Bias를 반영한 Neural Network의 표현</em></p>
-<p>이제 이를 행렬로 표현해보자. 행렬로써 표현하여 식을 짧고 간편하게 정리할 수 있으며, 컴퓨터에서의 구현을 다소 직관적이고 편하게 할 수 있다.</p>
-<script type="math/tex; mode=display">
-U^k = 
-\begin{bmatrix}
-    u^k_1 && u^k_2 && \dots && u^k_{n_k}
-\end{bmatrix} 
-^T
-\tag{Def. 4}</script><p><br></p>
-<script type="math/tex; mode=display">
-W^k = \begin{bmatrix}
-    w^k_{11} && w^k_{12} && \cdots && w^k_{1n_{k-1}} \\
-    w^k_{21} && w^k_{22} && \cdots && w^k_{2n_{k-1}} \\
-    \vdots && \ddots && \ddots && \vdots \\
-    w^k_{n_k1} && w^k_{n_k2} && \cdots && w^k_{n_kn_{k-1}} \\
-\end{bmatrix}
-\tag{Def. 5}</script><p><br></p>
-<script type="math/tex; mode=display">
-Z^{k-1} = 
-\begin{bmatrix}
-    z^{k-1}_1 && z^{k-1}_2 && \dots && z^{k-1}_{n_{k-1}}
-\end{bmatrix}^T
-\tag{Def. 6}</script><p><br></p>
-<script type="math/tex; mode=display">
-B^k = 
-\begin{bmatrix}
-    b^k_1 && b^k_2 && \dots && b^k_{n_k}
-\end{bmatrix}^T
-\tag{Def. 7}</script><p><br></p>
-<script type="math/tex; mode=display">
-\therefore U^k = W^kZ^{k-1} + B^k
-\quad
-(Z^k = f(U^k), \quad where \space f: \mathbb{R}^{n^k} \to \mathbb{R}^{n^k})</script><p><br></p>
-<h3 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h3><hr>
-<p>이번 장에서는 Gradient Descent에 대해서 다룰 예정이다. 하지만 너무 깊게는 안 다룰 생각이다. 그렇다고 걱정할 필요는 없다. 나중에 존나 자세하게 다룰거니깐 걱정은 붙들어 매도록 하자. </p>
-<p align="center"><img src="https://kimh060612.github.io/img/GradientDescent.gif" width="100%"></p>
-
-<p><em>Figure 4. Gradient Descent을 묘사하는 Figure</em><br>Gradient Descent는 간단하게 설명해서 Gradient를 활용해서 Objective Function(목적 함수)의 최저점을 찾는 것이 목표이다. 위의 사진처럼 말이다. 이의 명확한 표현을 직관적으로 납득시키기 위해서 다음의 사진을 보자.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/GD.jpg" width="70%"></p>
-
-<p><em>Figure 5. Gradient Descent를 직관적으로 설명하기 위한 그림</em></p>
-<p>이처럼 목적 함수의 미분값을 활용하여 목적 함수의 최저점을 찾는 것이 가능하다. 이에 대한 자세한 설명은 진짜 나중에 질리도록 해주도록 하겠다. 걱정하지 말아달라.</p>
-<p>그렇다면 이제 Neural Network에서 목적 함수는 어떤 것을 사용하는지 알아봐야한다. 이것도 지금은 그냥 “그런 것이 있다”라고만 생각하자. 이 파트는 신경망을 이해하는데 있어서 중요하고 심도있는 내용이기 때문에 나중에 Post 하나를 통으로 열어서 집중적으로 설명할 것이다.</p>
-<p>이번 포스트에서는 목적함수로써 주로 2가지를 다룰 것이다.</p>
-<ol>
-<li>Mean Squared Error</li>
-</ol>
-<script type="math/tex; mode=display">
-E = \frac{1}{2N}\sum_i(y_i - t_i)^2
-\tag{Equation (3)}</script><ol>
-<li>Cross-Entropy</li>
-</ol>
-<script type="math/tex; mode=display">
-E = -\sum_c t_c\ln y_c
-\tag{Equation (4)}</script><p>$Equation 3$은 주로 regression 문제에서 목적 함수로 쓰이고, $Equation 4$는 주로 classification 문제에서 쓰인다.<br>이렇게 Error function이 있는데 Update를 어떻게 한다고 하는 것일까? 다음과 같은 공식으로 Update 하면 된다</p>
-<script type="math/tex; mode=display">
-w_{t+1} \gets w_t - \alpha \frac{\partial E}{\partial w_t}
-\quad
-\alpha: learning \space rate
-\tag{Equation (5)}</script><p>직관적으로 생각해보면, 그래프의 미분값이 음수이면 아래로 볼록한 이차 함수에서 극소점이 오른쪽에 있다는 것이다. 그렇다면 변수에 양수를 더해줘야 극소점에 다가갈 것이다. 반대도 마찬가지이다. 그리고 한번 Update를 할때 너무 변화폭을 급하게 하지 않기 위해서 learning rate를 곱해줘서 update를 해준다. 그렇게 적절한 learning rate를 지정하여 몇번 반복해주면 최저점에 수렴해 있을 것이다.</p>
-<p>집요하지만, 이번 주제에 관한 내용은 나중에 “Optimization, Error function, and Problem”에 관한 포스트에서 자세하게 다룰 것이다. 그러니 지금은 직관적으로만 학습의 Process를 이해하는데 사력을 다해주기를 바란다.</p>
-<h3 id="Back-propagation-of-FCNN"><a href="#Back-propagation-of-FCNN" class="headerlink" title="Back-propagation of FCNN"></a>Back-propagation of FCNN</h3><hr>
-<p>이번에는 어떻게 신경망에 Gradient Descent를 적용할 것인지에 대한 내용이다. 위의 Gradient Descent를 배운 사람이라면 <script type="math/tex">Equation 5</script>를 활용하여 가중치의 Update를 다음과 같이 해줘야 할 것이라는데 이견을 가지지는 않을 것이다.</p>
-<script type="math/tex; mode=display">
-w^m_{ij} \gets w^m_{ij} - \alpha \frac{\partial E}{\partial w^m_{ij}}
-\tag{Equation (6)}
-\quad
-, m \in [1, K] \cap \N</script><p>여기서 $K$는 층의 갯수이다. </p>
-<p>이때 수치해석을 공부한 사람이라면, 다음과 같은 말을 할 수 있다.</p>
-<blockquote>
-<p>적당한 $\epsilon$을 선택하고, 수치 미분을 해주면 되지 않을까?</p>
-</blockquote>
-<p>뭐, 틀린 말은 아니다. 실제로도 좋은 방법이 될 수 있다.(<em>신경망이 아니라면 말이지</em>) 하지만 이건 Neural Network이다. 미친 연산량을 자랑하는 이쪽 바닥에서 안이하게 접근했다가는 피를 볼 수 있다.<br>요즘은 많은 알고리즘들이 발달해서 어떨지는 모르지만, 기본적인 수치 미분은 여기서 좋은 방법이 아니다. 우선 수치 미분을 진행하는 방법은 다음과 같다.</p>
-<script type="math/tex; mode=display">
-    \frac{df}{dx} \approx \frac{f(x+\epsilon) - f(x)}{\epsilon}</script><p>우선 이걸 신경망에 적용시키기 위해 가장 먼저 떠오르는 방법은 다음과 같을 것이다.</p>
-<ol>
-<li>$f(x+\epsilon)$를 계산한다.</li>
-<li>$f(x)$를 계산한다.</li>
-<li>미분을 계산한다.</li>
-</ol>
-<p>자, 1,2번의 과정을 신경망에 적용해 주려면 당신은 2번의 함수 값을 계산해 줘야한다. 만약, 계산량이 크지 않은 함수라면 빨리 되겠지만, 이건 신경망이다. <em>Figure 3</em>을 보자. 저기 그려져 있는 모든 간선에 대해서 Update를 해줘야하는데 진짜 어림도 없는 방법이 아닐 수 없다. 이걸 parameter마다 해준다? 진짜 어림도 없는 소리가 된다.</p>
-<p>그렇다면 다음으로 패기 넘치는 잼민이가 다음과 같이 말한다.</p>
-<blockquote>
-<p>그냥 간단한 함수만 쓰고 손으로 계산하면 안됨? 그것도 못하누 ㅋㅋ루삥뽕</p>
-</blockquote>
-<p>^^ 열심히 해보십셔 잼민님^^(<em>말도 안되는 소리는 집어 치우자</em>)</p>
-<p>여기서 tensorflow의 자동 미분(Autograd)가 나오는데, 우리는 이 전에 수학적인 부분으로 이를 접근해 보도록하자.</p>
-<p>가장 먼저, 이는 엄청나게 곂곂이 쌓인 함수이다. 일변수 Scalar 함수로 예시를 들어보면 다음과 비슷한 것이라고 생각할 수 있다.</p>
-<script type="math/tex; mode=display">y = f(f(f( \cdots f(x) \cdots)))</script><p>이를 미분해야한다고 생각해보자. Calculus를 배웠다면 가장 먼저 떠오르는 것은 Chain Rule 일 것이다.</p>
-<p>하지만, 어디서부터 어떻게 Chain Rule을 적용해야하는지 막막하다. 그 전에 우선 <strong>상대적으로 구히기 쉬울 것 같은</strong> 출력층 바로 이전의 가중치의 미분을 Chaine Rule을 통해서 구해보자.</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial w^K_{ij}} = \frac{\partial E}{\partial y_i}\frac{\partial y_i}{\partial u^K_i}\frac{\partial u^K_i}{\partial w^K_{ij}}
-\tag{Equation (6)}</script><p>이는 출력층 바로 이전의 층의 가중치이기에, Chain Rule을 통해서 <strong>비교적 쉽게</strong> 구할 수 있다. 다음과 같이 말이다.<br>(Error function(목적 함수)는 MSE를 사용하였다고 생각하자.)</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial y_i} = \frac{1}{N}(y_i - t_i)
-\quad  
-\frac{\partial y_i}{\partial u^K_i} = f'(u^K_i)
-\quad
-\frac{\partial u^K_i}{\partial w^K_{ij}} = z^{K-1}_j
-\tag{Equation (7)}</script><script type="math/tex; mode=display">
-\therefore \frac{\partial E}{\partial w^K_{ij}} = \frac{1}{N}(y_i - t_i)f'(u^K_i)z^{K-1}_j
-\tag{Equation (8)}</script><p>이렇게 성공적으로 $W^K$의 미분은 구했다고 치고, 어떻게 그 뒤의 층을 구할 것인가?<br>우선, 다음 그림을 보자.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/Layer.png" width="70%"></p>
-
-<p><em>Figure 7. Neural Network 구조에서 일부를 떼어서 표현한 그림</em><br>이는 Neural Network 구조에서 일부를 떼어낸 것을 표현한 그림이다. 위의 $\vdots$가 그려진 Unit은 그냥 거기에 많은 수의 Unit들이 있다고 생각하면 될 것이다.<br>우리는 여기서 $W^k$의 $E$에 대한 미분을 구하는 것이 목표이다.<br>즉, $Equation (9)$를 구하는 것이 목표이다.</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial w^k_{ip}} \space = \space ?</script><p>그것을 위해서 우선, Chaine Rule을 진행해 보자.</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial w^k_{ip}} = \frac{\partial E}{\partial u^k_i}\frac{\partial u^k_i}{\partial w^k_{ip}}
-\tag{Equation (9)}</script><p>여기까지만 봐서는 잘 모르겠다. 하지만 다음의 그림을 보고, $\frac{\partial E}{\partial u^k_i}$ 에 한번 더 Chain Rule을 적용해 보자.</p>
-<p align="center"><img src="https://kimh060612.github.io/img/Layer2.png" width="70%"></p>
-
-<p><em>Figure 6. $u^k_i$가 영향을 주는 앞 층의 Unit들</em><br>FCNN의 정의에 의해, $u^k_i$는 앞층의 모든 뉴런에 연결되어 있다. 그리고 그 앞 층의 뉴런들은 또 그 다음층으로 값을 전달하며, 점점 출력층에 가까워 지고, Error에 영향을 미치게 된다. 한마디로, 다음과 같이 Chain Rule을 펼칠 수 있다.</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial u^k_i} = \sum_{j=1}^{n_{k+1}} \frac{\partial E}{\partial u^{k+1}_j}\frac{\partial u^{k+1}_j}{\partial u^k_i}
-\tag{Equation (10)}</script><p>이때 우리는 위의 $Equation (10)$에서 유사한 부분을 찾을 수 있다.</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial u^k_i} \quad and \quad \frac{\partial E}{\partial u^{k+1}_j}</script><p>그렇다면 우리는 다음과 같이 정의를 해보자.</p>
-<script type="math/tex; mode=display">
-\delta^k_i = \frac{\partial E}{\partial u^k_i}
-\tag{Def. 8}</script><p>그렇다면 $Equation (10)$을 다음과 같이 작성할 수 있다.</p>
-<script type="math/tex; mode=display">
-\delta^k_i = \sum_{j=1}^{n_{k+1}} \delta^{k+1}_j\frac{\partial u^{k+1}_j}{\partial u^k_i}
-\tag{Equation (11)}</script><p><strong>이 점화식이 이번 포스트의 핵심이다.</strong><br>그렇다면 식을 다시 정리해서, 최종적인 미분 값을 구해보자.</p>
-<script type="math/tex; mode=display">
-\frac{\partial u^{k+1}_j}{\partial u^k_i} = \frac{\partial u^{k+1}_j}{\partial z^k_i}\frac{\partial z^{k}_i}{\partial u^k_i} = w^{k+1}_{ji}f'(u^k_i)
-\tag{Equation (12)}</script><p>그리고, $Equation (12)$를 통해서 $Equation (10)$을 다시 써보면 다음과 같다.</p>
-<script type="math/tex; mode=display">
-\delta^k_i = \sum_{j=1}^{n_{k+1}} \delta^{k+1}_jw^{k+1}_{ji}f'(u^k_i)
-\tag{Equation (13)}</script><p>자! 다 왔다. 이제 최종 미분식을 다시 써보자.</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial w^k_{ip}} = \delta^k_i\frac{\partial u^k_i}{\partial w^k_{ip}} = \left(\sum_{j=1}^{n_{k+1}} \delta^{k+1}_jw^{k+1}_{ji}f'(u^k_i)\right )\frac{\partial u^k_i}{\partial w^k_{ip}}</script><script type="math/tex; mode=display">
-\therefore \frac{\partial E}{\partial w^k_{ip}} = \left(\sum_{j=1}^{n_{k+1}} \delta^{k+1}_jw^{k+1}_{ji}f'(u^k_i)\right )z^{k-1}_p
-\tag{Equation (14)}</script><p>이 포스트의 핵심은 이것이다.<br>결국 우리는 <strong>상대적으로 구하기 쉬운 출력층의 미분을 구하는 과정에서 미분을 구하기 어려운 층의 미분을 구할 수 있는 실마리를 얻은 것이다.</strong><br>무슨 말이냐? 우리는 $\delta^k_i$를 정의했다면, 출력층의 $\delta^K$도 구할 수 있을 것이다. 그렇다면 $K-1$층의 $\delta^{K-1}$는 $\delta^K$를 통해서 구할 수 있으니, 결국 $W^{K-1}$층의 미분도 구할 수 있다는 뜻이 된다.</p>
-<p>본격적으로 $\delta^K$를 구해보자.</p>
-<script type="math/tex; mode=display">
-\delta^K_i = \frac{\partial E}{\partial y_i}\frac{\partial y_i}{\partial u^K_i} = \frac{1}{N}(y_i - t_i)f'(u^K_i)</script><p>그렇다. 바로 구할 수 있다. 그렇다면 이를 통해서 뒤에 있는 층의 미분을 차례로 구할 수 있는 것이다.<br>Feed Forward와는 달리, 이 과정은 방향이 반대로 진행된다. 따라서 이는 Back Propagation이라고 하며, 이렇게 $\delta$를 정의하여 미분을 구하는 방식을 <strong>일반화된 델타 규칙</strong>이라고 한다. </p>
-<p>자, Weight의 미분은 구했으니, Bias의 미분도 구해야한다. 이는 매우 간단하다.</p>
-<script type="math/tex; mode=display">
-\frac{\partial E}{\partial b^k_i} = \frac{\partial E}{\partial u^k_i}\frac{\partial u^k_i}{\partial b^k_i} = \delta^k_i\cdot 1
-\tag{Equation (15)}</script><p>이렇게 우리는 $\delta$에 관한 값만 구하면 신경망을 Update 하기 위한 미분을 전부 구할 수 있다. 그렇기에, <em>핵심</em>이라고 할 수 있는 방정식 $Def. 8$, $Equation (13)$, $Equation (15)$, $Equation (14)$에 대해서 행렬로써 표현해 보자.</p>
-<p><em>Definition of Delta</em></p>
-<script type="math/tex; mode=display">
-\Delta^k = \nabla_UE = \nabla_ZE \odot f'(U^k)
-\tag{Def. 8}</script><p><em>Delta Matrix Relation</em></p>
-<script type="math/tex; mode=display">
-\Delta^k = \left( (W^{k+1})^T\Delta^k \right) \odot f'(U^k)
-\tag{Equation (13)}</script><p><em>Bias Update Equation</em></p>
-<script type="math/tex; mode=display">
-\nabla_B E = \Delta^k
-\tag{Equation (15)}</script><p><em>Weight Update Equation</em></p>
-<script type="math/tex; mode=display">
-\nabla_WE = \Delta^kZ^{k-1}
-\tag{Equation (14)}</script><p>이걸로 FCNN의 Feed Forward, Back Propagation의 이론적인 부분이 끝났다. 이제 실습은 Part. B에서 마저 다룰 예정이다.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -2144,20 +1991,20 @@ w^m_{ij} \gets w^m_{ij} - \alpha \frac{\partial E}{\partial w^m_{ij}}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
