@@ -10,7 +10,7 @@
 
     <url>
         <loc>https://kimh060612.github.io/2022/10/09/mathematical-statistics-1/</loc>
-        <lastmod>2022-10-09T13:48:20.836Z</lastmod>
+        <lastmod>2022-10-15T05:12:13.783Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -57,7 +57,7 @@
     </url>
 
     <url>
-        <loc>https://kimh060612.github.io/2022/03/05/RNN-A/</loc>
+        <loc>https://kimh060612.github.io/2022/03/05/RNN-B/</loc>
         <lastmod>2022-05-29T15:00:32.841Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -65,7 +65,7 @@
     </url>
 
     <url>
-        <loc>https://kimh060612.github.io/2022/03/05/RNN-B/</loc>
+        <loc>https://kimh060612.github.io/2022/03/05/RNN-A/</loc>
         <lastmod>2022-05-29T15:00:32.841Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -81,14 +81,6 @@
     </url>
 
     <url>
-        <loc>https://kimh060612.github.io/2022/03/05/Transformer-A/</loc>
-        <lastmod>2022-05-29T15:00:32.841Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://kimh060612.github.io/2022/03/05/Serve-B/</loc>
         <lastmod>2022-05-29T15:00:32.841Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -97,7 +89,7 @@
     </url>
 
     <url>
-        <loc>https://kimh060612.github.io/2022/03/05/Transformer-C/</loc>
+        <loc>https://kimh060612.github.io/2022/03/05/Transformer-A/</loc>
         <lastmod>2022-05-29T15:00:32.841Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -113,7 +105,23 @@
     </url>
 
     <url>
+        <loc>https://kimh060612.github.io/2022/03/05/Transformer-C/</loc>
+        <lastmod>2022-05-29T15:00:32.841Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://kimh060612.github.io/2022/03/05/FCNN-A/</loc>
+        <lastmod>2022-05-29T15:00:32.840Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://kimh060612.github.io/2022/03/05/FCNN-B/</loc>
         <lastmod>2022-05-29T15:00:32.840Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -130,14 +138,6 @@
 
     <url>
         <loc>https://kimh060612.github.io/2022/03/13/Http-Start/</loc>
-        <lastmod>2022-05-29T15:00:32.840Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://kimh060612.github.io/2022/03/05/FCNN-B/</loc>
         <lastmod>2022-05-29T15:00:32.840Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
