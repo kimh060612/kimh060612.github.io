@@ -2,9 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kimh060612.github.io/2022/10/23/mathematical-statistics-2-B/</loc>
+    
+    <lastmod>2022-10-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://kimh060612.github.io/2022/10/21/mathematical-statistics-2/</loc>
     
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -47,7 +56,7 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/ViT-A/</loc>
+    <loc>https://kimh060612.github.io/2022/03/05/ViT-B/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -56,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/ViT-B/</loc>
+    <loc>https://kimh060612.github.io/2022/03/05/ViT-A/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -110,15 +119,6 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/Serve-B/</loc>
-    
-    <lastmod>2022-05-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://kimh060612.github.io/2022/03/05/Serve-A/</loc>
     
     <lastmod>2022-05-29</lastmod>
@@ -129,6 +129,15 @@
   
   <url>
     <loc>https://kimh060612.github.io/2022/03/05/Transformer-A/</loc>
+    
+    <lastmod>2022-05-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kimh060612.github.io/2022/03/05/Serve-B/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -164,15 +173,6 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/FCNN-B/</loc>
-    
-    <lastmod>2022-05-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://kimh060612.github.io/2022/03/13/Http-Start/</loc>
     
     <lastmod>2022-05-29</lastmod>
@@ -183,6 +183,15 @@
   
   <url>
     <loc>https://kimh060612.github.io/2022/03/13/OS-Start/</loc>
+    
+    <lastmod>2022-05-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kimh060612.github.io/2022/03/05/FCNN-B/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -209,7 +218,7 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/CNN-B/</loc>
+    <loc>https://kimh060612.github.io/2022/03/05/CNN-A/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -218,7 +227,7 @@
   </url>
   
   <url>
-    <loc>https://kimh060612.github.io/2022/03/05/CNN-A/</loc>
+    <loc>https://kimh060612.github.io/2022/03/05/CNN-B/</loc>
     
     <lastmod>2022-05-29</lastmod>
     
@@ -229,7 +238,7 @@
 
   <url>
     <loc>https://kimh060612.github.io/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -237,105 +246,105 @@
   
   <url>
     <loc>https://kimh060612.github.io/tags/Robotics/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/SLAM/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Mathematics/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Statistics/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Networking/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Computer-Science/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Deep-Learning/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Tensorflow2/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Operating-System/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Containerization/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Lightweight-Virtualization/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Javascript/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/DB/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Algorithm/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/tags/Data-Structure/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -344,49 +353,49 @@
   
   <url>
     <loc>https://kimh060612.github.io/categories/SLAM/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/categories/Mathematical-Statistics/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/categories/Networking/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/categories/Deep-Learning/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/categories/Operating-System/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/categories/Containerization/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kimh060612.github.io/categories/Interview/</loc>
-    <lastmod>2022-10-21</lastmod>
+    <lastmod>2022-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
